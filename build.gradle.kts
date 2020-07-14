@@ -28,7 +28,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.3.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-rx2:1.3.3")
 
-    implementation("org.xerial:sqlite-jdbc:3.6.16")
+//    implementation("org.xerial:sqlite-jdbc:3.6.16")
 
     testImplementation("junit", "junit", "4.12")
 }
