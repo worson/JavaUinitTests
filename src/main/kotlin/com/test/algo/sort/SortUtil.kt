@@ -16,6 +16,7 @@ object SortUtil{
         val src=Array<Int>(size,{0})
         for (i in 0 .. size-1){
             src[i]= Random.nextInt()
+//            src[i]= (Math.random()*100).toInt()
         }
         return src
     }
