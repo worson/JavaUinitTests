@@ -30,6 +30,7 @@ dependencies {
 
 //    implementation("org.xerial:sqlite-jdbc:3.6.16")
 
+    implementation("junit", "junit", "4.12")
     testImplementation("junit", "junit", "4.12")
 }
 
