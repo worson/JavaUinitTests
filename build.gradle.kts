@@ -29,6 +29,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-rx2:1.3.3")
 
 //    implementation("org.xerial:sqlite-jdbc:3.6.16")
+    implementation("net.lingala.zip4j","zip4j","2.6.1")
 
     implementation("junit", "junit", "4.12")
     testImplementation("junit", "junit", "4.12")
