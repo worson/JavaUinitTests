@@ -14,42 +14,55 @@ object MergeSort {
      * 涉及到数据拷贝，暂时未实现
      */
     fun mergeSort(src:Array<Int>){
-
         mergeSort(src,src.copyOf(),0,src.size-1)
     }
 
-    fun mergeSort(result:Array<Int>,src:Array<Int>,p:Int ,q:Int){
-        val r=(p+q)/2
-        if (p>=q || r==p) return
-//        println("mergeSort:p=${p},r=${r},q=${q}")
-        mergeSort(result,src,p,r)
-        mergeSort(result,src,r,q)
-        mergeArray(result,src,p,r,q)
+    fun mergeSort(result:Array<Int>, src:Array<Int>, p:Int, r:Int){
+        val q=(p+r+1)/2
+        if (p>=r || p==q ) return
+//        println("mergeSort:p=${p},q=${q},r=${r}")
+        mergeSort(result,src,p,q-1)
+        mergeSort(result,src,q,r)
+        mergeArray(result,src,p,q,r)
 
     }
-    fun mergeArray(result:Array<Int>,src:Array<Int>,p:Int ,r:Int,q:Int){
-        val total=(r-p)+(q-r)
+    fun mergeArray(result:Array<Int>,src:Array<Int>,p:Int ,q:Int,r:Int){
+        val total=(r-p+1)
+        val g=q-1
         var c=0
-        println("mergeArray:p=${p},r=${r},q=${q},c=${total}")
+//        println("mergeArray:(${p},${g}),(${q},${r}),total=${total}")
         var i=p
-        var j=r
-        do {
-            c++
-            if (src[])
-
-            if (i<r){
-
-            }else if (j<q){
-
+        var j=q
+        while (i<=(g) && j<=r){
+            if (src[i]<=src[j]){
+                result[c]=src[i]
+                i++
+            }else{
+                result[c]=src[j]
+                j++
             }
-        }while (c>total)
+            c++
+        }
+        val start=if (i<=(g)) i else if (j<=r)  j else Int.MAX_VALUE
+        val end=if (i<=(g)) g  else if (j<=r) r else -1
+//        println("mergeArray:start=$start,end=$end,src result -> ${src.copyOfRange(p,r+1).asList()}")
+
+        var index=start
+        while (index<=end){
+            result[c]=src[index]
+            index++
+            c++
+        }
+
+        System.arraycopy(result,0,src,p,total)
+//        println("mergeArray:result -> ${result.copyOf(total).asList()}")
     }
 
 }
 
 fun main() {
-    val sourceData= arrayOf(70, 95, 15, 38, 74, 95, 97, 14, 22, 33)
-//    val sourceData= SortUtil.arrayGenerate(10)
+//    val sourceData= arrayOf(95,70,  15, 38, 74, 95, 97, 14, 22, 33)//, 22, 33
+    val sourceData= SortUtil.arrayGenerate(10)
     println("origin:${Arrays.toString(sourceData)}")
     mergeSort(sourceData)
     println("result:${Arrays.toString(sourceData)}")
