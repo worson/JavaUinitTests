@@ -1,12 +1,14 @@
 package com.test.algo.sort
 
+import com.test.algo.sort.MergeSort.mergeSort
 import org.junit.Test
+import kotlin.math.max
 
 /**
  * 说明:
  * @author wangshengxing  07.14 2020
  */
-class TestMergeSort {
+class TestQuickSort {
 
     /**
      *
@@ -22,7 +24,7 @@ class TestMergeSort {
      */
     @Test
     fun mergeSortCost(){
-        SortUtil.batchTest(max=1_000_000,sortB = MergeSort::mergeSort)
+        SortUtil.batchTest(max=1_000_000,sortB = QuickSort::quickSort)
     }
 
     /**
@@ -36,6 +38,6 @@ class TestMergeSort {
      */
     @Test
     fun insertCpBubble(){
-        SortUtil.batchTest(max=1_000_000,sortA = MergeSort::mergeSort,sortB = BubbleSort::bubbleSort)
+        SortUtil.batchTest(max=1_000_000,sortA = MergeSort::mergeSort,sortB = QuickSort::quickSort)
     }
 }

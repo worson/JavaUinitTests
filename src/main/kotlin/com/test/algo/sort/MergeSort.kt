@@ -5,14 +5,12 @@ import org.junit.Assert
 import java.util.*
 
 /**
- * 说明:
+ * 说明:归并排序
  * @author wangshengxing  07.14 2020
  */
 object MergeSort {
 
-    /**
-     * 涉及到数据拷贝，暂时未实现
-     */
+
     fun mergeSort(src:Array<Int>){
         mergeSort(src,src.copyOf(),0,src.size-1)
     }

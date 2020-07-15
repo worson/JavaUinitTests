@@ -10,9 +10,7 @@ import java.util.*
  */
 object InsertSort {
 
-    /**
-     * 涉及到数据拷贝，暂时未实现
-     */
+
     fun insertSort(src:Array<Int>){
         val length=src.size
         for (i in 0 .. length-2){
