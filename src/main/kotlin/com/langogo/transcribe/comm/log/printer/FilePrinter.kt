@@ -6,6 +6,7 @@ import com.langogo.transcribe.comm.log.printer.file.DateFileNameGenerator
 import com.langogo.transcribe.comm.log.printer.file.FileNameGenerator
 import com.langogo.transcribe.comm.log.printer.file.backup.BackupStrategy
 import com.langogo.transcribe.comm.log.printer.file.backup.FileSizeBackupStrategy
+import com.langogo.transcribe.comm.log.report.LogHandler
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -20,15 +21,48 @@ import java.util.concurrent.LinkedBlockingQueue
  */
 class FilePrinter internal constructor(builder: Builder) : Printer {
 
+    class Builder( var folderPath: String ) {
+        var fileNameGenerator: FileNameGenerator= DateFileNameGenerator()
+        var backupStrategy: BackupStrategy = FileSizeBackupStrategy(10*1024*1024)
+        var flattener: Flattener = DefaultFlattener()
+        var logHandler: LogHandler = LogHandler(folderPath+File.separator+"backup")
+
+        fun backupStrategy(fileNameGenerator: FileNameGenerator): Builder {
+            this.fileNameGenerator = fileNameGenerator
+            return this
+        }
+
+        fun backupStrategy(backupStrategy: BackupStrategy): Builder {
+            this.backupStrategy = backupStrategy
+            return this
+        }
+
+        fun flattener(flattener: Flattener): Builder {
+            this.flattener = flattener
+            return this
+        }
+
+        fun logHandler(logHandler: LogHandler): Builder {
+            this.logHandler = logHandler
+            return this
+        }
+
+        fun build(): FilePrinter {
+            return FilePrinter(this)
+        }
+    }
+
     private val folderPath: String
 
-    private val fileNameGenerator: FileNameGenerator?
+    private val fileNameGenerator: FileNameGenerator
 
     private val backupStrategy: BackupStrategy
 
     private val flattener: Flattener
 
     private val writer: Writer
+
+    private val logHandler: LogHandler
 
     @Volatile
     private var worker: Worker? = null
@@ -39,7 +73,8 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
     }
 
     init {
-        folderPath = builder.folderPath
+        logHandler = builder.logHandler
+        folderPath = builder.folderPath+File.separator+"logging"
         fileNameGenerator = builder.fileNameGenerator
         backupStrategy = builder.backupStrategy
         flattener = builder.flattener
@@ -80,56 +115,47 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
         tag: String?,
         msg: String?
     ) {
-//        println("doPrintln")
         var lastFileName = writer.lastFileName
         if (lastFileName == null) {
-            val newFileName =
-                fileNameGenerator!!.generateFileName(logLevel, System.currentTimeMillis())
-            require(!(newFileName == null || newFileName.trim { it <= ' ' }.length == 0)) { "File name should not be empty." }
-
-            if (newFileName != lastFileName) {
-                if (writer.isOpened) {
-                    writer.close()
-                }
-                if (!writer.open(newFileName)) {
-                    return
-                }
-                lastFileName = newFileName
+            val folder = File(folderPath)
+            folder.list()?.forEach {
+                logHandler.onLogHandle(File(folderPath,it),false)
             }
+            //还没有文件
+            lastFileName= openNewLog(logLevel)
         }
         val lastFile = writer.file!!
         if (backupStrategy.shouldBackup(lastFile)) {
-            // Backup the log file, and create a new log file.
-            writer.close()
-            val backupFile = File(folderPath, "$lastFileName.bak")
-            if (backupFile.exists()) {
-                backupFile.delete()
+            if (writer.isOpened) {
+                writer.close()
             }
-            lastFile!!.renameTo(backupFile)
-            if (!writer.open(lastFileName)) {
-                return
-            }
+            logHandler.onLogHandle(File(lastFileName),false)
+            lastFileName= openNewLog(logLevel)
         }
         val flattenedLog = flattener.flatten(logLevel, tag, msg)
         writer.appendLog(flattenedLog)
     }
 
-
-
-
-    class Builder( var folderPath: String ) {
-        var fileNameGenerator: FileNameGenerator= DateFileNameGenerator()
-        var backupStrategy: BackupStrategy = FileSizeBackupStrategy(10*1024*1024)
-        var flattener: Flattener = DefaultFlattener()
-        fun flattener(flattener: Flattener): Builder {
-            this.flattener = flattener
-            return this
+    fun openNewLog(logLevel: Int):String?{
+        var lastFileName = writer.lastFileName
+        val newFileName =
+            fileNameGenerator.generateFileName(logLevel, System.currentTimeMillis())
+        if (newFileName != lastFileName) {
+            if (writer.isOpened) {
+                writer.close()
+            }
+            if (!writer.open(newFileName)) {
+                return null
+            }
+            return newFileName
         }
-
-        fun build(): FilePrinter {
-            return FilePrinter(this)
-        }
+        return newFileName
     }
+
+
+
+
+
 
     private class LogItem internal constructor(
         var timeMillis: Long,
@@ -272,7 +298,7 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
         fun close(): Boolean {
             if (bufferedWriter != null) {
                 try {
-                    bufferedWriter!!.close()
+                    bufferedWriter?.close()
                 } catch (e: IOException) {
                     e.printStackTrace()
                     return false
@@ -292,9 +318,9 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
          */
         fun appendLog(flattenedLog: String?) {
             try {
-                bufferedWriter!!.write(flattenedLog)
-                bufferedWriter!!.newLine()
-                bufferedWriter!!.flush()
+                bufferedWriter?.write(flattenedLog)
+                bufferedWriter?.newLine()
+                bufferedWriter?.flush()
             } catch (e: IOException) {
             }
         }

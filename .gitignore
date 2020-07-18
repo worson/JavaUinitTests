@@ -4,4 +4,5 @@ build
 *.iml
 out
 localCache
-/src/main/res/test/nio/mmap/
+src/main/res/test/nio/mmap/
+/src/main/res/test/log

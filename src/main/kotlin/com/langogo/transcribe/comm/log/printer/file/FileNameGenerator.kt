@@ -18,13 +18,13 @@ class DateFileNameGenerator : FileNameGenerator {
     var mLocalDateFormat: ThreadLocal<SimpleDateFormat> =
         object : ThreadLocal<SimpleDateFormat>() {
             override fun initialValue(): SimpleDateFormat {
-                return SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                return SimpleDateFormat("yyyy_MM_dd___HH_mm_ss", Locale.US)
             }
         }
 
     override fun generateFileName(logLevel: Int, timestamp: Long): String {
         val sdf = mLocalDateFormat.get()
         sdf.timeZone = TimeZone.getDefault()
-        return sdf.format(Date(timestamp))
+        return "log__${sdf.format(Date(timestamp))}.log"
     }
 }

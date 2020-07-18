@@ -10,5 +10,5 @@ object SystemCompat {
     /**
      * The line separator of system.
      */
-    var lineSeparator: String = Platform.get().lineSeparator()
+    val lineSeparator: String = Platform.get().lineSeparator()
 }
