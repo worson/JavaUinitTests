@@ -22,6 +22,14 @@ object L {
 
     private lateinit  var mLogger: Logger
 
+    init {
+        L.init(
+            LogConfiguration.Builder()
+                .addPrinter(ConsolePrinter())
+                .build()
+        )
+    }
+
     @JvmStatic
     fun init( configuration: LogConfiguration) {
         mLogger= Logger(configuration)
