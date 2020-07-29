@@ -37,36 +37,30 @@ object L {
         TAG_PREFIX=configuration.tag
         L.i("init#logLevel=${logLevel}")
     }
-    
-    @JvmStatic
-    fun d(msg: Any?) {
-        log(priority = LogLevel.DEBUG, tag = TAG_PREFIX, holder = { msg })
-    }
 
     @JvmStatic
-    fun d(tag: String, msg: Any?) {
-        log(priority = LogLevel.DEBUG, tag = "${TAG_PREFIX}#$tag", holder = { msg })
-    }
-
-    @JvmStatic
-    fun d(msg:() -> Any?) {
-        log(priority = LogLevel.DEBUG, tag = TAG_PREFIX, holder = msg)
+    fun flush() {
+        mLogger?.flush()
     }
 
 
     @JvmStatic
-    fun d(tag: String, msg:() -> Any?) {
+    fun d(tag: String, msg: Any) {
+        log(priority = LogLevel.DEBUG, tag = "${TAG_PREFIX}#$tag", msg = msg)
+    }
+
+
+    @JvmStatic
+    fun d(tag: String, msg:() -> Any) {
         log(priority = LogLevel.DEBUG, tag = "${TAG_PREFIX}#$tag", holder = msg)
     }
 
     @JvmStatic
-    @Deprecated("please use msg:() -> Any?")
     fun i(msg: Any?) {
         log(priority = LogLevel.INFO, tag = TAG_PREFIX, holder = { msg })
     }
 
     @JvmStatic
-    @Deprecated("please use msg:() -> Any?")
     fun i(tag: String, msg: Any?) {
         log(priority = LogLevel.INFO, tag = "${TAG_PREFIX}#$tag", holder = { msg })
     }

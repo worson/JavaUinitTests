@@ -1,12 +1,14 @@
 package com.langogo.transcribe.comm.log.printer
 
+import com.langogo.transcribe.comm.log.LogLevel
 import com.langogo.transcribe.comm.log.format.DefaultFlattener
 import com.langogo.transcribe.comm.log.format.Flattener
 import com.langogo.transcribe.comm.log.printer.file.DateFileNameGenerator
 import com.langogo.transcribe.comm.log.printer.file.FileNameGenerator
 import com.langogo.transcribe.comm.log.printer.file.backup.BackupStrategy
 import com.langogo.transcribe.comm.log.printer.file.backup.FileSizeBackupStrategy
-import com.langogo.transcribe.comm.log.report.LogHandler
+import com.langogo.transcribe.comm.log.printer.file.handler.DefaultLogHandler
+import com.langogo.transcribe.comm.log.printer.file.handler.LogHandler
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -25,7 +27,7 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
         var fileNameGenerator: FileNameGenerator= DateFileNameGenerator()
         var backupStrategy: BackupStrategy = FileSizeBackupStrategy(10*1024*1024)
         var flattener: Flattener = DefaultFlattener()
-        var logHandler: LogHandler = LogHandler(folderPath+File.separator+"backup")
+        var logHandler: LogHandler = DefaultLogHandler(folderPath+File.separator+"backup")
 
         fun backupStrategy(fileNameGenerator: FileNameGenerator): Builder {
             this.fileNameGenerator = fileNameGenerator
@@ -67,6 +69,8 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
     @Volatile
     private var worker: Worker? = null
 
+    private var needFlush = false
+
     companion object {
 
         private const val USE_WORKER = true
@@ -106,6 +110,11 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
         }
     }
 
+    override fun flush() {
+        needFlush=true
+        println(LogLevel.INFO,"FilePrinter","flush")
+    }
+
     /**
      * Do the real job of writing log to file.
      */
@@ -116,10 +125,19 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
         msg: String?
     ) {
         var lastFileName = writer.lastFileName
-        if (lastFileName == null) {
+        val flush=needFlush
+        if (lastFileName == null || needFlush) {
             val folder = File(folderPath)
-            folder.list()?.forEach {
-                logHandler.onLogHandle(File(folderPath,it),false)
+            folder.list()?.let {
+                list ->
+                val len =list.size
+                list.forEachIndexed { index, s ->
+                    if (index < len-1){
+                        logHandler.onLogHandle(File(folderPath,s),false)
+                    }else{
+                        logHandler.onLogHandle(File(folderPath,s),flush)
+                    }
+                }
             }
             //还没有文件
             lastFileName= openNewLog(logLevel)
@@ -129,7 +147,7 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
             if (writer.isOpened) {
                 writer.close()
             }
-            logHandler.onLogHandle(File(lastFileName),false)
+            logHandler.onLogHandle(File(lastFileName),flush)
             lastFileName= openNewLog(logLevel)
         }
         val flattenedLog = flattener.flatten(logLevel, tag, msg)

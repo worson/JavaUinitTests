@@ -8,14 +8,11 @@ class LogItem {
 
     var level: Int
 
-
     var tag: String
 
     var msg: String
 
-
     var threadInfo: String? = null
-
 
     var stackTraceInfo: String? = null
 

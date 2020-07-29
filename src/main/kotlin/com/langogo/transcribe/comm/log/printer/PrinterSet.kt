@@ -11,4 +11,10 @@ class PrinterSet(val printers: Array<Printer>):Printer {
             printer.println(logLevel, tag, msg)
         }
     }
+
+    override fun flush() {
+        for (printer in printers) {
+            printer?.flush()
+        }
+    }
 }

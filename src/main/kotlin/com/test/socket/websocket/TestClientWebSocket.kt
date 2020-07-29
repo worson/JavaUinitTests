@@ -3,8 +3,6 @@ package com.test.socket.websocket
 import com.langogo.transcribe.comm.L
 import com.langogo.transcribe.comm.log.LogConfiguration
 import com.langogo.transcribe.comm.log.printer.ConsolePrinter
-import com.langogo.transcribe.comm.log.printer.FilePrinter
-import com.langogo.transcribe.comm.log.report.ZipLogHandler
 import okhttp3.*
 import org.junit.Assert
 import org.junit.Test

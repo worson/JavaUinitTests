@@ -13,4 +13,6 @@ class ConsolePrinter(val formater: Flattener= DefaultFlattener()) :Printer {
         println(formater.flatten(logLevel,tag,msg))
     }
 
+    override fun flush() {
+    }
 }

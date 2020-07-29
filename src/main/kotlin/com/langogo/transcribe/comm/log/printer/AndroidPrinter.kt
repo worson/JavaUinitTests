@@ -14,6 +14,10 @@ class AndroidPrinter
  * maxChunkSize using [.AndroidPrinter].
  */ @JvmOverloads constructor(private val maxChunkSize: Int = DEFAULT_MAX_CHUNK_SIZE) :
     Printer {
+
+    override fun flush() {
+    }
+
     override fun println(
         logLevel: Int,
         tag: String,

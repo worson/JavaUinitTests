@@ -1,28 +1,18 @@
-package com.langogo.transcribe.comm.log.report
+package com.langogo.transcribe.comm.log.printer.file.handler
 
 import java.io.File
+
 
 /**
  * 说明:
  * @author wangshengxing  07.17 2020
  */
-open class LogHandler(private val fileDir:String) {
-
-    init {
-        checkFolder()
-    }
-
-    private fun checkFolder() {
-        val folder = File(fileDir)
-        if (!folder.exists()) {
-            folder.mkdirs()
-        }
-    }
+class DefaultLogHandler(val fileDir:String):LogHandler(fileDir) {
 
     /**
      * 处理日志数据
      */
-    open fun onLogHandle( logfile:File, isFlush:Boolean){
+    override fun onLogHandle( logfile:File, isFlush:Boolean){
         if (!logfile.exists()){
             return
         }
@@ -32,10 +22,5 @@ open class LogHandler(private val fileDir:String) {
             backFile.delete()
         }
         logfile.renameTo(backFile)
-    }
-
-
-    fun clearCaches(){
-
     }
 }

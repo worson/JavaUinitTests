@@ -1,4 +1,4 @@
-package com.langogo.transcribe.comm.log.report.clean
+package com.langogo.transcribe.comm.log.printer.file.handler.clean
 
 import java.io.File
 
