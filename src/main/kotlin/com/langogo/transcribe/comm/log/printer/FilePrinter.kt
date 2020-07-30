@@ -8,7 +8,7 @@ import com.langogo.transcribe.comm.log.printer.file.FileNameGenerator
 import com.langogo.transcribe.comm.log.printer.file.backup.BackupStrategy
 import com.langogo.transcribe.comm.log.printer.file.backup.FileSizeBackupStrategy
 import com.langogo.transcribe.comm.log.printer.file.handler.DefaultLogHandler
-import com.langogo.transcribe.comm.log.printer.file.handler.LogHandler
+import com.langogo.transcribe.comm.log.printer.file.handler.LogFileHandler
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -27,7 +27,7 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
         var fileNameGenerator: FileNameGenerator= DateFileNameGenerator()
         var backupStrategy: BackupStrategy = FileSizeBackupStrategy(10*1024*1024)
         var flattener: Flattener = DefaultFlattener()
-        var logHandler: LogHandler = DefaultLogHandler(folderPath+File.separator+"backup")
+        var logHandler: LogFileHandler = DefaultLogHandler(folderPath+File.separator+"backup")
 
         fun backupStrategy(fileNameGenerator: FileNameGenerator): Builder {
             this.fileNameGenerator = fileNameGenerator
@@ -44,7 +44,7 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
             return this
         }
 
-        fun logHandler(logHandler: LogHandler): Builder {
+        fun logHandler(logHandler: LogFileHandler): Builder {
             this.logHandler = logHandler
             return this
         }
@@ -64,7 +64,7 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
 
     private val writer: Writer
 
-    private val logHandler: LogHandler
+    private val logHandler: LogFileHandler
 
     @Volatile
     private var worker: Worker? = null

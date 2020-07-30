@@ -25,6 +25,9 @@ object FileZipper{
         parameters.compressionLevel = CompressionLevel.NORMAL // 压缩级别
         parameters.isEncryptFiles = true
         parameters.encryptionMethod = EncryptionMethod.ZIP_STANDARD // 加密方式
-        ZipFile(outfile,passwd.toCharArray()).addFiles(inputFiles,parameters)
+        ZipFile(outfile,passwd.toCharArray()).apply {
+            isRunInThread=true
+            addFiles(inputFiles,parameters)
+        }
     }
 }

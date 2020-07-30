@@ -28,7 +28,7 @@ class LogUnitTest {
             .addPrinter(ConsolePrinter())
             .addPrinter(
                 FilePrinter.Builder(logDir)
-                .logHandler(ZipLogHandler(backDir, LogFileReporter()))
+                .logHandler(ZipLogHandler(backDir, limitSize = 100*1024*1024,reporter=LogFileReporter()))
                 .build())
             .build())
     }

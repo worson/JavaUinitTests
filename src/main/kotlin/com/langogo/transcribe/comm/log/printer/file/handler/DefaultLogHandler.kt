@@ -7,7 +7,7 @@ import java.io.File
  * 说明:
  * @author wangshengxing  07.17 2020
  */
-class DefaultLogHandler(val fileDir:String):LogHandler(fileDir) {
+class DefaultLogHandler(val fileDir:String):LogFileHandler(fileDir) {
 
     /**
      * 处理日志数据
