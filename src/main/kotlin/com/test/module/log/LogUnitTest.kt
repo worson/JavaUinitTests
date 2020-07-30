@@ -4,6 +4,7 @@ import com.langogo.transcribe.comm.L
 import com.langogo.transcribe.comm.log.LogConfiguration
 import com.langogo.transcribe.comm.log.LogLevel
 import com.langogo.transcribe.comm.log.internal.StackTraceUtil
+import com.langogo.transcribe.comm.log.printer.AndroidPrinter
 import com.langogo.transcribe.comm.log.printer.ConsolePrinter
 import com.langogo.transcribe.comm.log.printer.FilePrinter
 import com.langogo.transcribe.comm.log.printer.file.handler.ZipLogHandler
@@ -26,7 +27,8 @@ class LogUnitTest {
             .logLevel(LogLevel.ALL)
             .threadInfo(true)
             .traceInfo(true,6)
-            .addPrinter(ConsolePrinter())
+//            .addPrinter(ConsolePrinter())
+            .addPrinter(AndroidPrinter())
             .addPrinter(
                 FilePrinter.Builder(logDir)
                 .logHandler(ZipLogHandler(backDir, limitSize = 100*1024*1024,reporter=LogFileReporter()))

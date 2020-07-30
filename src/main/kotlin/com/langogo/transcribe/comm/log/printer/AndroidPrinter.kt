@@ -1,23 +1,18 @@
 package com.langogo.transcribe.comm.log.printer
 
 import com.langogo.transcribe.comm.log.LogItem
+import kotlin.reflect.KCallable
+import kotlin.reflect.KClass
+import kotlin.reflect.full.staticFunctions
 
 /**
  * 说明:
  * @author wangshengxing  07.15 2020
  */
-class AndroidPrinter
-/**
- * Constructor.
- *
- *
- * If single message is too long, it will be separated to several chunks automatically, the max
- * size of each chunk default to be {@value #DEFAULT_MAX_CHUNK_SIZE}, you can specify the
- * maxChunkSize using [.AndroidPrinter].
- */ @JvmOverloads constructor(private val maxChunkSize: Int = DEFAULT_MAX_CHUNK_SIZE) :
-    Printer {
+class AndroidPrinter(private val maxChunkSize: Int = DEFAULT_MAX_CHUNK_SIZE) : Printer {
 
     override fun flush() {
+
     }
 
     override fun println(
@@ -49,9 +44,9 @@ class AndroidPrinter
      * @param tag      the tag of log
      * @param msg      the msg of log
      */
-    fun printChunk(logLevel: Int, tag: String?, msg: String?) {
-        // TODO: 2020/7/15
+    fun printChunk(logLevel: Int, tag: String, msg: String) {
 //        android.util.Log.println(logLevel, tag, msg)
+        println(msg)
     }
 
     companion object {
@@ -85,11 +80,5 @@ class AndroidPrinter
             return originEnd
         }
     }
-    /**
-     * Constructor.
-     *
-     * @param maxChunkSize the max size of each chunk. If the message is too long, it will be
-     * separated to several chunks automatically
-     * @since 1.4.1
-     */
+
 }
