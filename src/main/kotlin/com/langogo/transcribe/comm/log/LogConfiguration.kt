@@ -87,7 +87,7 @@ class LogConfiguration(val logLevel:Int = 0,val tag: String ,
 
         companion object {
             private const val DEFAULT_LOG_LEVEL = LogLevel.ALL
-            private val DEFAULT_TAG: String = "LLOG"
+            private val DEFAULT_TAG: String = "Langogo"
         }
     }
 }

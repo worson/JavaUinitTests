@@ -4,7 +4,12 @@ import com.langogo.transcribe.comm.log.LogConfiguration
 import com.langogo.transcribe.comm.log.LogItem
 import com.langogo.transcribe.comm.log.LogLevel
 import com.langogo.transcribe.comm.log.Logger
+import com.langogo.transcribe.comm.log.internal.Platform
 import com.langogo.transcribe.comm.log.printer.ConsolePrinter
+import com.langogo.transcribe.comm.log.printer.FilePrinter
+import com.langogo.transcribe.comm.log.printer.file.handler.ZipLogHandler
+import com.langogo.transcribe.comm.log.printer.file.reporter.LogFileReporter
+import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
 
@@ -20,19 +25,46 @@ object L {
     private lateinit  var mLogger: Logger
 
     init {
-        L.init(
+        init(
             LogConfiguration.Builder()
-                .addPrinter(ConsolePrinter())
+                .addPrinter(Platform.get().defaultPrinter())
                 .build()
         )
     }
+
+    @JvmStatic
+    fun init(debug:Boolean,logPath:File?){
+        if (logPath==null){
+            init(LogConfiguration.Builder()
+                .logLevel(if (debug) LogLevel.ALL else LogLevel.DEBUG)
+                .threadInfo(debug)
+                .traceInfo(debug,6)
+                .addPrinter(Platform.get().defaultPrinter())
+                .build())
+        }else{
+            init(LogConfiguration.Builder()
+                .logLevel(if (debug) LogLevel.ALL else LogLevel.DEBUG)
+                .threadInfo(true)
+                .traceInfo(debug,6)
+                .addPrinter(Platform.get().defaultPrinter())
+                .addPrinter(
+                    FilePrinter.Builder(File(logPath.absolutePath,"logging").absolutePath)
+                        .logHandler(
+                            ZipLogHandler(File(logPath.absolutePath,"backup").absolutePath, limitSize = 100*1024*1024,reporter=LogFileReporter()))
+                        .build())
+                .build())
+        }
+
+
+    }
+
 
     @JvmStatic
     fun init( configuration: LogConfiguration) {
         mLogger= Logger(configuration)
         this.logLevel=configuration.logLevel
         TAG_PREFIX=configuration.tag
-        L.i("init#logLevel=${logLevel}")
+        println("init#logLevel=${logLevel}")
     }
 
     @JvmStatic

@@ -48,6 +48,7 @@ open class Platform {
         private fun findPlatform(): Platform {
             try {
                 Class.forName("android.os.Build")
+                return Android()
             } catch (ignored: ClassNotFoundException) {
 
             }

@@ -3,6 +3,7 @@ package com.test.module.log
 import com.langogo.transcribe.comm.L
 import com.langogo.transcribe.comm.log.LogConfiguration
 import com.langogo.transcribe.comm.log.LogLevel
+import com.langogo.transcribe.comm.log.internal.Platform
 import com.langogo.transcribe.comm.log.internal.StackTraceUtil
 import com.langogo.transcribe.comm.log.printer.AndroidPrinter
 import com.langogo.transcribe.comm.log.printer.ConsolePrinter
@@ -10,6 +11,7 @@ import com.langogo.transcribe.comm.log.printer.FilePrinter
 import com.langogo.transcribe.comm.log.printer.file.handler.ZipLogHandler
 import com.langogo.transcribe.comm.log.printer.file.reporter.LogFileReporter
 import org.junit.Test
+import java.io.File
 
 /**
  * 说明:
@@ -27,13 +29,14 @@ class LogUnitTest {
             .logLevel(LogLevel.ALL)
             .threadInfo(true)
             .traceInfo(true,6)
-//            .addPrinter(ConsolePrinter())
-            .addPrinter(AndroidPrinter())
+            .addPrinter(Platform.get().defaultPrinter())
             .addPrinter(
                 FilePrinter.Builder(logDir)
                 .logHandler(ZipLogHandler(backDir, limitSize = 100*1024*1024,reporter=LogFileReporter()))
                 .build())
             .build())
+
+//        L.init(false, File("src/main/res/test/log/dev/log"))
     }
     @Test
     fun testPrint(){

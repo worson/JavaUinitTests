@@ -28,7 +28,7 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
         var fileNameGenerator: FileNameGenerator= DateFileNameGenerator()
         var backupStrategy: BackupStrategy = FileSizeBackupStrategy(10*1024*1024)
         var flattener: Flattener = BasicFlattener()
-        var logHandler: LogFileHandler = DefaultLogHandler(folderPath+File.separator+"backup")
+        var logHandler: LogFileHandler? = null
 
         fun backupStrategy(fileNameGenerator: FileNameGenerator): Builder {
             this.fileNameGenerator = fileNameGenerator
@@ -65,7 +65,7 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
 
     private val writer: Writer
 
-    private val logHandler: LogFileHandler
+    private val logHandler: LogFileHandler?
 
     @Volatile
     private var worker: Worker? = null
@@ -79,7 +79,7 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
 
     init {
         logHandler = builder.logHandler
-        folderPath = builder.folderPath+File.separator+"logging"
+        folderPath = builder.folderPath //+File.separator+"logging"
         fileNameGenerator = builder.fileNameGenerator
         backupStrategy = builder.backupStrategy
         flattener = builder.flattener
@@ -131,9 +131,9 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
                 val len =list.size
                 list.forEachIndexed { index, s ->
                     if (index < len-1){
-                        logHandler.onLogHandle(File(folderPath,s),false)
+                        logHandler?.onLogHandle(File(folderPath,s),false)
                     }else{
-                        logHandler.onLogHandle(File(folderPath,s),flush)
+                        logHandler?.onLogHandle(File(folderPath,s),flush)
                     }
                 }
             }
@@ -145,7 +145,7 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
             if (writer.isOpened) {
                 writer.close()
             }
-            logHandler.onLogHandle(File(lastFileName),flush)
+            logHandler?.onLogHandle(File(lastFileName),flush)
             lastFileName= openNewLog(item.level)
         }
         val flattenedLog = flattener.flatten(item)
