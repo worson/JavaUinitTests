@@ -1,17 +1,14 @@
 package com.test.module.log
 
-import com.langogo.transcribe.comm.L
-import com.langogo.transcribe.comm.log.LogConfiguration
-import com.langogo.transcribe.comm.log.LogLevel
-import com.langogo.transcribe.comm.log.internal.Platform
-import com.langogo.transcribe.comm.log.internal.StackTraceUtil
-import com.langogo.transcribe.comm.log.printer.AndroidPrinter
-import com.langogo.transcribe.comm.log.printer.ConsolePrinter
-import com.langogo.transcribe.comm.log.printer.FilePrinter
-import com.langogo.transcribe.comm.log.printer.file.handler.ZipLogHandler
-import com.langogo.transcribe.comm.log.printer.file.reporter.LogFileReporter
+import com.langogo.lib.log.L
+import com.langogo.lib.log.LogConfiguration
+import com.langogo.lib.log.LogLevel
+import com.langogo.lib.log.internal.Platform
+import com.langogo.lib.log.internal.StackTraceUtil
+import com.langogo.lib.log.printer.FilePrinter
+import com.langogo.lib.log.printer.file.handler.ZipLogHandler
+import com.langogo.lib.log.printer.file.reporter.LogFileReporter
 import org.junit.Test
-import java.io.File
 
 /**
  * 说明:
@@ -24,7 +21,8 @@ class LogUnitTest {
 
     init {
 
-        L.init(LogConfiguration.Builder()
+        L.init(
+            LogConfiguration.Builder()
             .tag("Langogo")
             .logLevel(LogLevel.ALL)
             .threadInfo(true)
@@ -32,7 +30,13 @@ class LogUnitTest {
             .addPrinter(Platform.get().defaultPrinter())
             .addPrinter(
                 FilePrinter.Builder(logDir)
-                .logHandler(ZipLogHandler(backDir, limitSize = 100*1024*1024,reporter=LogFileReporter()))
+                .logHandler(
+                    ZipLogHandler(
+                        backDir,
+                        limitSize = 100 * 1024 * 1024,
+                        reporter = LogFileReporter()
+                    )
+                )
                 .build())
             .build())
 

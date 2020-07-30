@@ -1,8 +1,8 @@
 package com.test.socket.websocket
 
-import com.langogo.transcribe.comm.L
-import com.langogo.transcribe.comm.log.LogConfiguration
-import com.langogo.transcribe.comm.log.printer.ConsolePrinter
+import com.langogo.lib.log.L
+import com.langogo.lib.log.LogConfiguration
+import com.langogo.lib.log.printer.ConsolePrinter
 import okhttp3.*
 import org.junit.Assert
 import org.junit.Test

@@ -1,6 +1,6 @@
 package com.test.http
 
-import com.langogo.transcribe.comm.L
+import com.langogo.lib.log.L
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.junit.Assert
