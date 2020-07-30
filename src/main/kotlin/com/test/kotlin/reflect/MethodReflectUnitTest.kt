@@ -1,6 +1,7 @@
 package com.test.kotlin.reflect
 
 import org.junit.Test
+import kotlin.system.measureTimeMillis
 
 /**
  * 说明:
@@ -22,5 +23,22 @@ class MethodReflectUnitTest {
         val method=Class.forName("java.lang.System")?.getMethod("currentTimeMillis")
         println("method:${method}")
         println("method: result ${method?.invoke(null)}")
+    }
+
+    @Test
+    fun compareReflectPerformance(){
+        val times=10000000
+        val method=Class.forName("java.lang.System")?.getMethod("currentTimeMillis")
+        val reflectCost= measureTimeMillis{
+            for (i in 0 .. times){
+                method?.invoke(null)
+            }
+        }
+        val directCost= measureTimeMillis{
+            for (i in 0 .. times){
+                System.currentTimeMillis()
+            }
+        }
+        println("compareReflectPerformance: reflectCost=${reflectCost}, directCost=${directCost}")
     }
 }
