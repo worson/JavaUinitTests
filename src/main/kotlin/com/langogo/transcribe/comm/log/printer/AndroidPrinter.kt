@@ -1,13 +1,15 @@
 package com.langogo.transcribe.comm.log.printer
 
 import com.langogo.transcribe.comm.log.LogItem
+import com.langogo.transcribe.comm.log.format.BasicFlattener
+import com.langogo.transcribe.comm.log.format.Flattener
 import java.lang.reflect.Method
 
 /**
  * 说明:
  * @author wangshengxing  07.15 2020
  */
-class AndroidPrinter(private val maxChunkSize: Int = DEFAULT_MAX_CHUNK_SIZE) : Printer {
+class AndroidPrinter(private val maxChunkSize: Int = DEFAULT_MAX_CHUNK_SIZE, val formater: Flattener = BasicFlattener()) : Printer {
     var printer: Method?=null
 
     init {
@@ -24,8 +26,13 @@ class AndroidPrinter(private val maxChunkSize: Int = DEFAULT_MAX_CHUNK_SIZE) : P
         item: LogItem
     ) {
         val msg=item.msg
+        val tag=if (item.stackTraceInfo==null){
+            item.tag
+        }else{
+            item.tag+item.stackTraceInfo
+        }
         if (item.msg.length <= maxChunkSize) {
-            printChunk(item.level, item.tag, item.msg)
+            printChunk(item.level,tag , item.msg)
             return
         }
         val msgLength = msg.length
@@ -37,7 +44,7 @@ class AndroidPrinter(private val maxChunkSize: Int = DEFAULT_MAX_CHUNK_SIZE) : P
                 start,
                 Math.min(start + maxChunkSize, msgLength)
             )
-            printChunk(item.level, item.tag, msg.substring(start, end))
+            printChunk(item.level, tag, msg.substring(start, end))
             start = end
         }
     }
