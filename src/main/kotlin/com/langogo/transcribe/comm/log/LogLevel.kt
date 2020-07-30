@@ -101,9 +101,9 @@ object LogLevel {
             WARN -> "W"
             ERROR -> "E"
             else -> if (logLevel < VERBOSE) {
-                "V-" + (VERBOSE - logLevel)
+                "V-"
             } else {
-                "E+" + (logLevel - ERROR)
+                "E+"
             }
         }
         return levelName

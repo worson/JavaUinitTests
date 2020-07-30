@@ -1,6 +1,7 @@
 package com.langogo.transcribe.comm.log
 
-import com.langogo.transcribe.comm.log.format.DefaultFlattener
+import com.langogo.transcribe.comm.log.format.BasicFlattener
+import com.langogo.transcribe.comm.log.format.RawFlattener
 import com.langogo.transcribe.comm.log.format.Flattener
 import com.langogo.transcribe.comm.log.printer.Printer
 import java.util.*
@@ -31,7 +32,7 @@ class LogConfiguration(val logLevel:Int = 0,val tag: String ,
 
         private var stackTraceDepth = 6
 
-        private var formater: Flattener = DefaultFlattener()
+        private var formater: Flattener = BasicFlattener()
 
         private var printers:MutableList<Printer> = mutableListOf()
 

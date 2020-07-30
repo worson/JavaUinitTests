@@ -1,13 +1,10 @@
 package com.langogo.transcribe.comm
 
 import com.langogo.transcribe.comm.log.LogConfiguration
+import com.langogo.transcribe.comm.log.LogItem
 import com.langogo.transcribe.comm.log.LogLevel
 import com.langogo.transcribe.comm.log.Logger
-import com.langogo.transcribe.comm.log.format.DefaultFlattener
-import com.langogo.transcribe.comm.log.format.Flattener
 import com.langogo.transcribe.comm.log.printer.ConsolePrinter
-import com.langogo.transcribe.comm.log.printer.Printer
-import com.langogo.transcribe.comm.log.printer.PrinterSet
 import java.io.PrintWriter
 import java.io.StringWriter
 
@@ -137,7 +134,7 @@ object L {
             } else {
                 msg?.toString() ?: "null"
             }
-            mLogger?.println(logLevel,tag,message)
+            mLogger?.println(LogItem(priority,tag,message))
         }
     }
 
@@ -155,7 +152,7 @@ object L {
             } else {
                 msg?.toString() ?: "null"
             }
-            mLogger?.println(logLevel,tag,message)
+            mLogger?.println(LogItem(priority,tag,message))
         }
     }
 }

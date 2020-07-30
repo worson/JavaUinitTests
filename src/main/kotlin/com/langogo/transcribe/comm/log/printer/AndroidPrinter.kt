@@ -1,5 +1,7 @@
 package com.langogo.transcribe.comm.log.printer
 
+import com.langogo.transcribe.comm.log.LogItem
+
 /**
  * 说明:
  * @author wangshengxing  07.15 2020
@@ -19,12 +21,11 @@ class AndroidPrinter
     }
 
     override fun println(
-        logLevel: Int,
-        tag: String,
-        msg: String
+        item: LogItem
     ) {
-        if (msg.length <= maxChunkSize) {
-            printChunk(logLevel, tag, msg)
+        val msg=item.msg
+        if (item.msg.length <= maxChunkSize) {
+            printChunk(item.level, item.tag, item.msg)
             return
         }
         val msgLength = msg.length
@@ -36,7 +37,7 @@ class AndroidPrinter
                 start,
                 Math.min(start + maxChunkSize, msgLength)
             )
-            printChunk(logLevel, tag, msg.substring(start, end))
+            printChunk(item.level, item.tag, msg.substring(start, end))
             start = end
         }
     }

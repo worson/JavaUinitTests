@@ -1,7 +1,8 @@
 package com.langogo.transcribe.comm.log.printer
 
+import com.langogo.transcribe.comm.log.LogItem
 import com.langogo.transcribe.comm.log.LogLevel
-import com.langogo.transcribe.comm.log.format.DefaultFlattener
+import com.langogo.transcribe.comm.log.format.BasicFlattener
 import com.langogo.transcribe.comm.log.format.Flattener
 import com.langogo.transcribe.comm.log.printer.file.DateFileNameGenerator
 import com.langogo.transcribe.comm.log.printer.file.FileNameGenerator
@@ -26,7 +27,7 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
     class Builder( var folderPath: String ) {
         var fileNameGenerator: FileNameGenerator= DateFileNameGenerator()
         var backupStrategy: BackupStrategy = FileSizeBackupStrategy(10*1024*1024)
-        var flattener: Flattener = DefaultFlattener()
+        var flattener: Flattener = BasicFlattener()
         var logHandler: LogFileHandler = DefaultLogHandler(folderPath+File.separator+"backup")
 
         fun backupStrategy(fileNameGenerator: FileNameGenerator): Builder {
@@ -98,31 +99,28 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
         }
     }
 
-    override fun println(logLevel: Int, tag: String, msg: String) {
+    override fun println(item:LogItem) {
         val timeMillis = System.currentTimeMillis()
         if (USE_WORKER) {
             if (!worker!!.isStarted()) {
                 worker?.start()
             }
-            worker?.enqueue(LogItem(timeMillis, logLevel, tag, msg))
+            worker?.enqueue(item)
         } else {
-            doPrintln(timeMillis, logLevel, tag, msg)
+            doPrintln(item)
         }
     }
 
     override fun flush() {
         needFlush=true
-        println(LogLevel.INFO,"FilePrinter","flush")
+        println(LogItem(LogLevel.INFO,"FilePrinter","flush"))
     }
 
     /**
      * Do the real job of writing log to file.
      */
     private fun doPrintln(
-        timeMillis: Long,
-        logLevel: Int,
-        tag: String?,
-        msg: String?
+        item:LogItem
     ) {
         var lastFileName = writer.lastFileName
         val flush=needFlush
@@ -140,7 +138,7 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
                 }
             }
             //还没有文件
-            lastFileName= openNewLog(logLevel)
+            lastFileName= openNewLog(item.level)
         }
         val lastFile = writer.file!!
         if (backupStrategy.shouldBackup(lastFile)) {
@@ -148,9 +146,9 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
                 writer.close()
             }
             logHandler.onLogHandle(File(lastFileName),flush)
-            lastFileName= openNewLog(logLevel)
+            lastFileName= openNewLog(item.level)
         }
-        val flattenedLog = flattener.flatten(logLevel, tag, msg)
+        val flattenedLog = flattener.flatten(item)
         writer.appendLog(flattenedLog)
     }
 
@@ -175,12 +173,7 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
 
 
 
-    private class LogItem internal constructor(
-        var timeMillis: Long,
-        var level: Int,
-        var tag: String?,
-        var msg: String?
-    )
+
 
     /**
      * Work in background, we can enqueue the logs, and the worker will dispatch them.
@@ -227,7 +220,7 @@ class FilePrinter internal constructor(builder: Builder) : Printer {
             var log: LogItem
             try {
                 while (logs.take().also { log = it } != null) {
-                    doPrintln(log.timeMillis, log.level, log.tag, log.msg)
+                    doPrintln(log)
                 }
             } catch (e: InterruptedException) {
                 e.printStackTrace()

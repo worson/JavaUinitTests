@@ -41,8 +41,15 @@ abstract open class LogFileHandler(private val fileDir:String) {
     }
 
 
-    fun clearCaches(){
-
+    /**
+     * 删除所有日志文件
+     */
+    fun deleteLogFiles(){
+        logFiles()?.forEach{
+            if (it.exists()) {
+                it.delete()
+            }
+        }
     }
 
     /**

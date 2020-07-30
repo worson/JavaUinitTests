@@ -117,7 +117,7 @@ object StackTraceUtil {
         val element = stackTrace[index]
         val methodName = element.methodName
         val lineNumber = element.lineNumber
-        return "( ${element.fileName}:${lineNumber} )"
+        return "(${element.fileName}:${lineNumber})"
 //        return "[(${element.fileName}:${lineNumber})#${methodName}]"
     }
 

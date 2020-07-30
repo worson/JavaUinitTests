@@ -12,6 +12,12 @@ class LogItem {
 
     var msg: String
 
+    var time: Long=System.currentTimeMillis()
+
+    fun basicLength():Int{
+        return tag.length+msg.length+20
+    }
+
     var threadInfo: String? = null
 
     var stackTraceInfo: String? = null

@@ -22,6 +22,7 @@ class LogUnitTest {
     init {
 
         L.init(LogConfiguration.Builder()
+            .tag("Langogo")
             .logLevel(LogLevel.ALL)
             .threadInfo(true)
             .traceInfo(true,6)
@@ -32,6 +33,11 @@ class LogUnitTest {
                 .build())
             .build())
     }
+    @Test
+    fun testPrint(){
+        L.d(TAG,"testPrint")
+    }
+
 
     @Test
     fun testFileSort(){
