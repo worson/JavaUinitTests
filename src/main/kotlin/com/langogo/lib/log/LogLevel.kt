@@ -41,21 +41,6 @@ object LogLevel {
 
     /**
      * Get a name representing the specified log level.
-     *
-     *
-     * The returned name may be<br></br>
-     * Level less than [LogLevel.VERBOSE]: "VERBOSE-N", N means levels below
-     * [LogLevel.VERBOSE]<br></br>
-     * [LogLevel.VERBOSE]: "VERBOSE"<br></br>
-     * [LogLevel.DEBUG]: "DEBUG"<br></br>
-     * [LogLevel.INFO]: "INFO"<br></br>
-     * [LogLevel.WARN]: "WARN"<br></br>
-     * [LogLevel.ERROR]: "ERROR"<br></br>
-     * Level greater than [LogLevel.ERROR]: "ERROR+N", N means levels above
-     * [LogLevel.ERROR]
-     *
-     * @param logLevel the log level to get name for
-     * @return the name
      */
     fun getLevelName(logLevel: Int): String {
         val levelName: String
@@ -76,21 +61,6 @@ object LogLevel {
 
     /**
      * Get a short name representing the specified log level.
-     *
-     *
-     * The returned name may be<br></br>
-     * Level less than [LogLevel.VERBOSE]: "V-N", N means levels below
-     * [LogLevel.VERBOSE]<br></br>
-     * [LogLevel.VERBOSE]: "V"<br></br>
-     * [LogLevel.DEBUG]: "D"<br></br>
-     * [LogLevel.INFO]: "I"<br></br>
-     * [LogLevel.WARN]: "W"<br></br>
-     * [LogLevel.ERROR]: "E"<br></br>
-     * Level greater than [LogLevel.ERROR]: "E+N", N means levels above
-     * [LogLevel.ERROR]
-     *
-     * @param logLevel the log level to get short name for
-     * @return the short name
      */
     fun getShortLevelName(logLevel: Int): String {
         val levelName: String
