@@ -1,15 +1,20 @@
 package com.langogo.transcribe.comm.log.printer
 
 import com.langogo.transcribe.comm.log.LogItem
-import kotlin.reflect.KCallable
-import kotlin.reflect.KClass
-import kotlin.reflect.full.staticFunctions
+import java.lang.reflect.Method
 
 /**
  * 说明:
  * @author wangshengxing  07.15 2020
  */
 class AndroidPrinter(private val maxChunkSize: Int = DEFAULT_MAX_CHUNK_SIZE) : Printer {
+    var printer: Method?=null
+
+    init {
+        val cls=Class.forName("android.util.Log")
+        val print=cls?.getMethod("println", Int::class.javaPrimitiveType,String::class.java,String::class.java)
+        printer=print
+    }
 
     override fun flush() {
 
@@ -45,8 +50,7 @@ class AndroidPrinter(private val maxChunkSize: Int = DEFAULT_MAX_CHUNK_SIZE) : P
      * @param msg      the msg of log
      */
     fun printChunk(logLevel: Int, tag: String, msg: String) {
-//        android.util.Log.println(logLevel, tag, msg)
-        println(msg)
+        printer?.invoke(null,logLevel,tag,msg)
     }
 
     companion object {

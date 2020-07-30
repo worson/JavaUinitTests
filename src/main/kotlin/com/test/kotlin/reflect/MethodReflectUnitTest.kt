@@ -26,6 +26,13 @@ class MethodReflectUnitTest {
     }
 
     @Test
+    fun testReflectCurrentTime2(){
+        val method=System::class.java.getMethod("currentTimeMillis")
+        println("method:${method}")
+        println("method: result ${method?.invoke(null)}")
+    }
+
+    @Test
     fun compareReflectPerformance(){
         val times=10000000
         val method=Class.forName("java.lang.System")?.getMethod("currentTimeMillis")
