@@ -10,10 +10,7 @@ import com.langogo.lib.log.printer.file.backup.BackupStrategy
 import com.langogo.lib.log.printer.file.backup.FileSizeBackupStrategy
 import com.langogo.lib.log.printer.file.handler.DefaultLogHandler
 import com.langogo.lib.log.printer.file.handler.LogFileHandler
-import java.io.BufferedWriter
-import java.io.File
-import java.io.FileWriter
-import java.io.IOException
+import java.io.*
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
 
@@ -23,7 +20,7 @@ import java.util.concurrent.LinkedBlockingQueue
  * @author wangshengxing  07.17 2020
  */
 class FilePrinter internal constructor(builder: Builder) :
-    Printer {
+    Printer() {
 
     class Builder( var folderPath: String ) {
         var fileNameGenerator: FileNameGenerator =
@@ -34,7 +31,7 @@ class FilePrinter internal constructor(builder: Builder) :
             BasicFlattener()
         var logHandler: LogFileHandler? = null
 
-        fun backupStrategy(fileNameGenerator: FileNameGenerator): Builder {
+        fun fileNameGenerator(fileNameGenerator: FileNameGenerator): Builder {
             this.fileNameGenerator = fileNameGenerator
             return this
         }
@@ -298,7 +295,6 @@ class FilePrinter internal constructor(builder: Builder) :
                     return false
                 }
             }
-
             // Create buffered writer.
             try {
                 bufferedWriter = BufferedWriter(FileWriter(file, true))

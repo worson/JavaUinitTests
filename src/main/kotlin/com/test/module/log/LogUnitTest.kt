@@ -9,6 +9,7 @@ import com.langogo.lib.log.printer.FilePrinter
 import com.langogo.lib.log.printer.file.handler.ZipLogHandler
 import com.langogo.lib.log.printer.file.reporter.LogFileReporter
 import org.junit.Test
+import java.lang.management.ManagementFactory
 
 /**
  * 说明:
@@ -45,6 +46,12 @@ class LogUnitTest {
     @Test
     fun testPrint(){
         L.d(TAG,"testPrint")
+    }
+
+    @Test
+    fun testPid(){
+        val pid = ManagementFactory.getRuntimeMXBean()?.name?.split("@")?.first()
+        System.out.println("当前JVM Process ID: " + pid)
     }
 
 

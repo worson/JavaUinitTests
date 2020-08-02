@@ -7,7 +7,7 @@ import com.langogo.lib.log.LogItem
  * @author wangshengxing  07.15 2020
  */
 class PrinterSet(val printers: Array<Printer>):
-    Printer {
+    Printer() {
 
     override fun println(item: LogItem) {
         for (printer in printers) {

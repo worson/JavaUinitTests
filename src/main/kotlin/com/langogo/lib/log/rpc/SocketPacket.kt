@@ -1,4 +1,4 @@
-package com.test.socket.localsocket
+package com.langogo.lib.log.rpc
 
 /**
  * 说明:

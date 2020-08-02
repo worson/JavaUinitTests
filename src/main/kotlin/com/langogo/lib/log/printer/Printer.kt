@@ -6,9 +6,13 @@ import com.langogo.lib.log.LogItem
  * 说明:
  * @author wangshengxing  07.15 2020
  */
-interface Printer {
+abstract open class Printer() {
 
-    fun println(item: LogItem)
+    abstract open fun println(item: LogItem)
 
-    fun flush()
+    open fun realPrintln(content:String){
+
+    }
+
+    abstract open fun flush()
 }

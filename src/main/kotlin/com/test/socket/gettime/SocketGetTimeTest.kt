@@ -1,16 +1,12 @@
 package com.test.socket.gettime
 
 import com.langogo.lib.log.L
-import com.test.socket.localsocket.ClientSocket
-import com.test.socket.localsocket.ServerSocketService
 import org.junit.Test
-import java.io.BufferedOutputStream
 import java.io.InputStream
 import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket
 import java.util.concurrent.LinkedBlockingDeque
-import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.concurrent.thread
 

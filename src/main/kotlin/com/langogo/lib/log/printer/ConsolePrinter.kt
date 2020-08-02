@@ -10,7 +10,7 @@ import com.langogo.lib.log.format.Flattener
  * @author wangshengxing  07.15 2020
  */
 class ConsolePrinter(val formater: Flattener = BasicFlattener()) :
-    Printer {
+    Printer() {
 
     override fun println(item: LogItem) {
         println(formater.flatten(item))

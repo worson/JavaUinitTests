@@ -10,7 +10,7 @@ import java.lang.reflect.Method
  * @author wangshengxing  07.15 2020
  */
 class AndroidPrinter(private val maxChunkSize: Int = DEFAULT_MAX_CHUNK_SIZE, val formater: Flattener = BasicFlattener()) :
-    Printer {
+    Printer() {
     var printer: Method?=null
 
     init {

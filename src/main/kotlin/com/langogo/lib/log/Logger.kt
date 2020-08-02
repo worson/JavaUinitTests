@@ -11,7 +11,7 @@ import com.langogo.lib.log.printer.PrinterSet
  * @author wangshengxing  07.17 2020
  */
 class Logger(val logConfiguration: LogConfiguration) :
-    Printer {
+    Printer() {
 
     private var  printer: Printer
     private var mFormater: Flattener
