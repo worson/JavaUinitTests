@@ -24,6 +24,8 @@ class SocektSingleReceiveUnitTest {
         clent.start()
         Thread.sleep(500)
         clent.send("hello,server!".toByteArray())
+        clent.send("hello,server!".toByteArray())
+        clent.send("hello,server!".toByteArray())
         Thread.sleep(500)
     }
 
@@ -35,7 +37,14 @@ class SocektSingleReceiveUnitTest {
         val clent = ClientSocket("127.0.0.1")
         clent.start()
         Thread.sleep(500)
-        clent.send("hello".toByteArray())
+
+        clent.send("hello,server!".toByteArray())
+        Thread.sleep(50)
+        clent.send("hello,server!".toByteArray())
+        Thread.sleep(50)
+        clent.send("hello,server!".toByteArray())
+        Thread.sleep(50
+        )
         Thread.sleep(1500)
     }
 }
