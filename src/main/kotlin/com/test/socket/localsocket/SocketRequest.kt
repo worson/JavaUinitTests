@@ -1,4 +1,4 @@
-package com.test.socket.jsonsocket
+package com.test.socket.localsocket
 
 import com.google.gson.JsonObject
 
