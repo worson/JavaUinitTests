@@ -142,7 +142,7 @@ class SocketSeverPrinterProxy(
         //出现截断时：尾端未能解析的数据要留到下一次才能解析
         var msg: String? = if (buffer.remaining() > 0) SocketPacketUtil.unpack(buffer) else null
         while (msg != null) {
-            L.i(TAG, "handleRead:handle log :${msg} ")
+            L.v(TAG, {"handleRead:handle log :${msg} "})
             delegate?.realPrintln(msg)
             msg = if (buffer.remaining() > 0) SocketPacketUtil.unpack(buffer) else null
         }

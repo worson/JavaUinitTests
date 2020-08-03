@@ -1,6 +1,7 @@
 package com.test.libtest.log
 
 import com.langogo.lib.log.L
+import com.langogo.lib.log.SimpleLog
 import com.langogo.lib.log.rpc.SocketPacketUtil
 import org.junit.Assert
 import org.junit.Test
@@ -16,7 +17,7 @@ class LogPacketUtilTest {
     val TAG = "LogPacketUitilTest"
 
     init {
-        L.init(true, null)
+        SimpleLog.initConsolePrint(true)
     }
 
     @Test

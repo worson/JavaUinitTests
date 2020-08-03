@@ -110,7 +110,7 @@ class SocketClientPrinter(var flattener: Flattener = BasicFlattener() ): Printer
         }
 
         fun send(data:ByteArray){
-            outputBlockQueue.offerLast(data,500,TimeUnit.MILLISECONDS)
+            outputBlockQueue.offer(data,500,TimeUnit.MILLISECONDS)
         }
 
         fun flush(){

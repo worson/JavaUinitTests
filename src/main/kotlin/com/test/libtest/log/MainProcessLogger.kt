@@ -11,7 +11,7 @@ import java.io.File
 fun main() {
     val  TAG = "MainProcessLogger"
     val logDir=File("src/main/res/test/log/main")
-    L.init(true, logDir)
+    L.init(debug = true, stackDepth = 6,logPath = logDir)
     L.i(TAG, "main: main log started")
     while (true){
         Thread.sleep(1000)

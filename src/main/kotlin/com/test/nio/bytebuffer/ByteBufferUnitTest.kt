@@ -1,6 +1,7 @@
 package com.test.nio.bytebuffer
 
 import com.langogo.lib.log.L
+import com.langogo.lib.log.SimpleLog
 import org.junit.Assert
 import org.junit.Test
 import java.nio.ByteBuffer
@@ -14,7 +15,7 @@ class ByteBufferUnitTest {
     val  TAG = "ByteBufferUnitTest"
 
     init {
-        L.init(true,null)
+        SimpleLog.initConsolePrint(true)
     }
 
     @Test

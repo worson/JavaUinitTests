@@ -1,6 +1,7 @@
 package com.test.socket.gettime
 
 import com.langogo.lib.log.L
+import com.langogo.lib.log.SimpleLog
 import org.junit.Test
 import java.io.InputStream
 import java.net.InetSocketAddress
@@ -18,7 +19,7 @@ class SocketGetTimeTest {
     val  TAG = "SocketGetTimeTest"
 
     init {
-        L.init(true,null)
+        SimpleLog.initConsolePrint(true)
     }
 
     class TestServerSocket(val bindPort:Int=22612){

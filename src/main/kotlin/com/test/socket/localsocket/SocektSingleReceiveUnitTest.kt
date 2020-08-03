@@ -1,6 +1,7 @@
 package com.test.socket.localsocket
 
 import com.langogo.lib.log.L
+import com.langogo.lib.log.SimpleLog
 import org.junit.Test
 
 /**
@@ -12,7 +13,7 @@ class SocektSingleReceiveUnitTest {
     val  TAG = "SocektSingleReceiveUnitTest"
 
     init {
-        L.init(true,null)
+        SimpleLog.initConsolePrint(true)
     }
 
     @Test

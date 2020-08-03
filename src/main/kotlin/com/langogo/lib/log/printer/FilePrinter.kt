@@ -159,6 +159,10 @@ class FilePrinter internal constructor(builder: Builder) :
         writer.appendLog(flattenedLog)
     }
 
+    override fun realPrintln(content: String) {
+        writer?.appendLog(content)
+    }
+
     fun openNewLog(logLevel: Int):String?{
         var lastFileName = writer.lastFileName
         val newFileName =

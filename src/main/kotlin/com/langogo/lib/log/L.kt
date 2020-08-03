@@ -33,13 +33,13 @@ object L {
     }
 
     @JvmStatic
-    fun init(debug:Boolean,logPath:File?){
+    fun init(debug:Boolean,stackDepth:Int=6,logPath:File?){
         if (logPath==null){
             init(
                 LogConfiguration.Builder()
                     .logLevel(if (debug) LogLevel.ALL else LogLevel.DEBUG)
                     .threadInfo(debug)
-                    .traceInfo(debug, 6)
+                    .traceInfo(debug, stackDepth)
                     .addPrinter(Platform.get().defaultPrinter())
                     .addPrinter(SocketClientPrinter())
                     .build()
@@ -50,7 +50,7 @@ object L {
                 LogConfiguration.Builder()
                     .logLevel(if (debug) LogLevel.ALL else LogLevel.DEBUG)
                     .threadInfo(true)
-                    .traceInfo(debug, 6)
+                    .traceInfo(debug, stackDepth)
                     .addPrinter(Platform.get().defaultPrinter())
                     .addPrinter(
                         FilePrinter.Builder(

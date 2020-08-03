@@ -22,10 +22,10 @@ object SocketPacketUtil {
      * 打包数据
      */
     fun pack(msg:String):ByteArray{
-        val buffer = ByteBuffer.allocate(msg.length+PacketProtocol.PACKET_WRAPPER_SIZE)
+        val bar=msg.toByteArray(Charsets.UTF_8)
+        val buffer = ByteBuffer.allocate(bar.size+PacketProtocol.PACKET_WRAPPER_SIZE)
         buffer.putInt(PacketProtocol.FLAG_PACKET_START)
         buffer.putInt(msg.length)
-        val bar=msg.toByteArray(Charsets.UTF_8)
         buffer.put(bar)
         val crc = CRC32()
         crc.update(bar)

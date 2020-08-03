@@ -10,7 +10,7 @@ import java.io.File
 
 fun main() {
     val  TAG = "OtherProcessLogger"
-    L.init(true, null)
+    L.init(debug = true, stackDepth = 6,logPath = null)
     var cnt=2
     while ((cnt--)>0){
         L.i(TAG, "main: send log to main ${cnt} ")
