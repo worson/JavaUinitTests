@@ -2,8 +2,13 @@ package com.langogo.lib.log
 
 import com.langogo.lib.log.internal.Platform
 import com.langogo.lib.log.printer.FilePrinter
+import com.langogo.lib.log.printer.Printer
+import com.langogo.lib.log.printer.file.DateFileNameGenerator
+import com.langogo.lib.log.printer.file.FileNameGenerator
 import com.langogo.lib.log.printer.file.handler.ZipLogHandler
 import com.langogo.lib.log.printer.file.reporter.LogFileReporter
+import com.langogo.lib.log.rpc.SocketClientPrinter
+import com.langogo.lib.log.rpc.SocketSeverPrinterProxy
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -36,9 +41,11 @@ object L {
                     .threadInfo(debug)
                     .traceInfo(debug, 6)
                     .addPrinter(Platform.get().defaultPrinter())
+                    .addPrinter(SocketClientPrinter())
                     .build()
             )
         }else{
+            var filePrinter:Printer?=null
             init(
                 LogConfiguration.Builder()
                     .logLevel(if (debug) LogLevel.ALL else LogLevel.DEBUG)
@@ -46,7 +53,9 @@ object L {
                     .traceInfo(debug, 6)
                     .addPrinter(Platform.get().defaultPrinter())
                     .addPrinter(
-                        FilePrinter.Builder(File(logPath.absolutePath, "logging").absolutePath)
+                        FilePrinter.Builder(
+                            File(logPath.absolutePath, "logging").absolutePath)
+                            .fileNameGenerator(DateFileNameGenerator())
                             .logHandler(
                                 ZipLogHandler(
                                     File(logPath.absolutePath, "backup").absolutePath,
@@ -54,10 +63,15 @@ object L {
                                     reporter = LogFileReporter()
                                 )
                             )
-                            .build()
+                            .build().apply {
+                                filePrinter=this
+                            }
                     )
                     .build()
             )
+            filePrinter?.let {
+                SocketSeverPrinterProxy(it).start()
+            }
         }
 
 
@@ -77,6 +91,23 @@ object L {
         mLogger?.flush()
     }
 
+    @JvmStatic
+    fun v(tag: String, msg:() -> Any) {
+        log(
+            priority = LogLevel.VERBOSE,
+            tag = "$TAG_PREFIX#$tag",
+            holder = msg
+        )
+    }
+
+    @JvmStatic
+    fun d( msg: Any) {
+        log(
+            priority = LogLevel.DEBUG,
+            tag = TAG_PREFIX,
+            msg = msg
+        )
+    }
 
     @JvmStatic
     fun d(tag: String, msg: Any) {

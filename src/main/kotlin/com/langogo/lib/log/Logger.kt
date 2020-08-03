@@ -28,6 +28,8 @@ class Logger(val logConfiguration: LogConfiguration) :
                 )
             )
         }
+        logLevel=logConfiguration.logLevel
+        printer.logLevel=logConfiguration.logLevel
     }
 
     override fun println(item: LogItem) {

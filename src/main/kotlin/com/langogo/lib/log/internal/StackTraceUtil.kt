@@ -111,6 +111,22 @@ object StackTraceUtil {
     }
 
     /**
+     * 指印当前堆栈信息
+     */
+    fun getCurrentStackInfo(): String {
+        val stackTrace =
+            Thread.currentThread().stackTrace
+        val sb = StringBuilder()
+        stackTrace.forEach {
+            element ->
+            val methodName = element.methodName
+            val lineNumber = element.lineNumber
+            sb.append("(${element.fileName}:${lineNumber})\n")
+        }
+        return sb.toString()
+    }
+
+    /**
      * 获取打日志位置所在的类，行号，方法名，只在debug的时候输出
      */
     fun getRuntimeCaller(maxDepth: Int): String {
@@ -131,12 +147,15 @@ object StackTraceUtil {
 //        return "[(${element.fileName}:${lineNumber})#${methodName}]"
     }
 
+
+
+
     private fun getStackOffset(stackTrace: Array<StackTraceElement>,maxDepth: Int): Int {
         if (null != stackTrace) {
             if (stackTrace.size > maxDepth) {
                 return maxDepth
             }
-            return stackTrace.size
+            return stackTrace.size-1
         }
         return -1
     }

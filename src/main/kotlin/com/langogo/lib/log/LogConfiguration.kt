@@ -11,7 +11,7 @@ import java.util.*
  * 说明:初始化类
  * @author wangshengxing  07.17 2020
  */
-class LogConfiguration(val logLevel:Int = 0, val tag: String,
+class LogConfiguration(val logLevel:Int = LogLevel.INFO, val tag: String,
                        val withThread:Boolean = false,
                        val withStackTrace:Boolean = false, val stackTraceDepth:Int = 0,
                        val interceptors: List<Interceptor>? = null,

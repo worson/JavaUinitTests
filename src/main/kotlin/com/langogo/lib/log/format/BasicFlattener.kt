@@ -18,8 +18,8 @@ class BasicFlattener: Flattener {
         val sb = StringBuilder(item.basicLength())
         sb.append(" ")
         sb.append(LogLevel.getShortLevelName(item.level))
+        sb.append(" ")
         if (item.threadInfo!=null) {
-            sb.append(" ")
             sb.append(item.threadInfo)
             sb.append(" ")
         }
