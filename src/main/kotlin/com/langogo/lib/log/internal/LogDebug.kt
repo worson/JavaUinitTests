@@ -11,14 +11,16 @@ import com.langogo.lib.log.Logger
 
 internal object  LogDebug {
 
+    internal val IS_DEBUG = false
+
     val debugLogger:Logger by lazy {
-        val debug=true
+        val debug=IS_DEBUG
         Logger(
             LogConfiguration.Builder()
-            .logLevel(if (debug) LogLevel.ALL else LogLevel.WARN)
-            .threadInfo(debug)
-            .traceInfo(debug, 5)
-            .addPrinter(Platform.get().defaultPrinter())
-            .build())
+                .logLevel(if (debug) LogLevel.ALL else LogLevel.WARN)
+                .threadInfo(debug)
+                .traceInfo(debug, 5)
+                .addPrinter(Platform.get().defaultPrinter())
+                .build())
     }
 }
