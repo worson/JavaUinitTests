@@ -17,7 +17,7 @@ fun main() {
         Thread.sleep(500)
     }
 //    Thread.sleep(30000)
-    L.flush()
+    L.flush(0)
     Thread.sleep(3000)
     println("main:exit ")
 }

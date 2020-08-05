@@ -60,7 +60,7 @@ class LogUnitTest {
         val arr = arrayOf(3,1,5)
         arr.sortBy { -it }
         L.d(TAG,"list = ${arr.toList()}")
-        L.flush()
+        L.flush(0)
         Thread.sleep(500)
     }
 

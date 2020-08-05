@@ -15,9 +15,9 @@ class PrinterSet(val printers: Array<Printer>):
         }
     }
 
-    override fun flush() {
+    override fun flush(type:Int) {
         for (printer in printers) {
-            printer?.flush()
+            printer?.flush(type)
         }
     }
 }

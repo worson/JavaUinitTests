@@ -16,7 +16,7 @@ class NoActionPrinter(val formater: Flattener = BasicFlattener()) :
 
     }
 
-    override fun flush() {
+    override fun flush(type:Int) {
 
     }
 }

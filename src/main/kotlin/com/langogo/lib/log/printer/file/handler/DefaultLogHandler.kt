@@ -13,7 +13,7 @@ class DefaultLogHandler(val fileDir:String):
     /**
      * 处理日志数据
      */
-    override fun onLogHandle( logfile:File, isFlush:Boolean){
+    override fun onLogHandle( logfile:File, isFlush:Boolean,flushType:Int){
         if (!logfile.exists()){
             return
         }

@@ -10,7 +10,7 @@ import java.io.File
  */
 class LogFileReporter {
 
-    class ReportItem(val file: File){
+    class ReportItem(val file: File,flushType:Int){
 
     }
 

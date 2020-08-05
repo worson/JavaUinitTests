@@ -113,7 +113,7 @@ class SocketClientPrinter(var flattener: Flattener = BasicFlattener() ): Printer
             outputBlockQueue.offer(data,500,TimeUnit.MILLISECONDS)
         }
 
-        fun flush(){
+        fun flush(type:Int){
             outputStream?.flush()
         }
 
@@ -161,8 +161,8 @@ class SocketClientPrinter(var flattener: Flattener = BasicFlattener() ): Printer
 
     }
 
-    override fun flush() {
-        client?.flush()
+    override fun flush(type:Int) {
+        client?.flush(type)
         client?.stop()
     }
 }

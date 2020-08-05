@@ -36,8 +36,8 @@ class Logger(val logConfiguration: LogConfiguration) :
         printlnInternal(item)
     }
 
-    override fun flush() {
-        printer?.flush()
+    override fun flush(type:Int) {
+        printer?.flush(type)
     }
 
     fun printlnInternal(log: LogItem) {

@@ -23,7 +23,7 @@ abstract open class LogFileHandler(private val fileDir:String) {
         }
     }
 
-    abstract open fun onLogHandle( logfile:File, isFlush:Boolean)
+    abstract open fun onLogHandle( logfile:File, isFlush:Boolean,flushType:Int)
 
     /**
      * 返回log文件列表

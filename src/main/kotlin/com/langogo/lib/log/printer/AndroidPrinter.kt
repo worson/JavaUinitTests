@@ -19,7 +19,7 @@ class AndroidPrinter(private val maxChunkSize: Int = DEFAULT_MAX_CHUNK_SIZE, val
         printer=print
     }
 
-    override fun flush() {
+    override fun flush(type:Int) {
 
     }
 

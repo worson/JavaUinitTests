@@ -16,6 +16,6 @@ class ConsolePrinter(val formater: Flattener = BasicFlattener()) :
         println(formater.flatten(item))
     }
 
-    override fun flush() {
+    override fun flush(type:Int) {
     }
 }

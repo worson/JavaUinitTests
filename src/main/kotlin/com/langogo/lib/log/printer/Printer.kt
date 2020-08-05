@@ -7,6 +7,8 @@ import com.langogo.lib.log.LogLevel
  * 说明:
  * @author wangshengxing  07.15 2020
  */
+
+
 abstract open class Printer() {
 
     var logLevel= LogLevel.ALL
@@ -17,7 +19,7 @@ abstract open class Printer() {
 
     }
 
-    abstract open fun flush()
+    abstract open fun flush(type:Int)
 
     fun v(tag: String, msg: () -> String) {
         if (LogLevel.VERBOSE<logLevel){

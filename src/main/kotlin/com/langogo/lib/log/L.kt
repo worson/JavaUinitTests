@@ -87,8 +87,8 @@ object L {
     }
 
     @JvmStatic
-    fun flush() {
-        mLogger?.flush()
+    fun flush(type:Int=0) {
+        mLogger?.flush(type)
     }
 
     @JvmStatic

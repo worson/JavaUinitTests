@@ -28,7 +28,7 @@ class ZipLogHandler(val fileDir:String,val limitSize:Long=100*1024*1024,val repo
 
     }
 
-    override fun onLogHandle(logfile: File, isFlush: Boolean) {
+    override fun onLogHandle(logfile: File, isFlush: Boolean,flushType:Int) {
         println("onLogHandle#isFlush=$isFlush , filePath=${logfile.absolutePath}")
         //备份日志
         if (logfile.exists()){
@@ -49,7 +49,7 @@ class ZipLogHandler(val fileDir:String,val limitSize:Long=100*1024*1024,val repo
                     FileZipper.compress(files,compressFile,"heyan1234")
                     reporter?.onReport(
                         this,
-                        LogFileReporter.ReportItem(compressFile))
+                        LogFileReporter.ReportItem(compressFile,flushType))
                 }
                 filesLimitCut(lestCacheSize)
             }

@@ -72,6 +72,7 @@ class FilePrinter internal constructor(builder: Builder) :
     private var worker: Worker? = null
 
     private var needFlush = false
+    private var flushType = -1
 
     companion object {
 
@@ -112,8 +113,9 @@ class FilePrinter internal constructor(builder: Builder) :
         }
     }
 
-    override fun flush() {
+    override fun flush(type:Int) {
         needFlush=true
+        flushType=type
         println(
             LogItem(
                 LogLevel.INFO,
@@ -138,9 +140,9 @@ class FilePrinter internal constructor(builder: Builder) :
                 val len =list.size
                 list.forEachIndexed { index, s ->
                     if (index < len-1){
-                        logHandler?.onLogHandle(File(folderPath,s),false)
+                        logHandler?.onLogHandle(File(folderPath,s),false,flushType)
                     }else{
-                        logHandler?.onLogHandle(File(folderPath,s),flush)
+                        logHandler?.onLogHandle(File(folderPath,s),flush,flushType)
                     }
                 }
             }
@@ -152,7 +154,7 @@ class FilePrinter internal constructor(builder: Builder) :
             if (writer.isOpened) {
                 writer.close()
             }
-            logHandler?.onLogHandle(File(lastFileName),flush)
+            logHandler?.onLogHandle(File(lastFileName),flush,flushType)
             lastFileName= openNewLog(item.level)
         }
         val flattenedLog = flattener.flatten(item)

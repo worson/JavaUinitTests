@@ -33,7 +33,7 @@ class SocketLogUnitTest {
             expect.append(msg)
             client.realPrintln(msg)
         }
-        client.flush()
+        client.flush(0)
     }
 
     @Test
@@ -46,7 +46,7 @@ class SocketLogUnitTest {
             override fun println(item: LogItem) {
             }
 
-            override fun flush() {
+            override fun flush(type:Int) {
             }
 
             override fun realPrintln(content: String) {
@@ -90,7 +90,7 @@ class SocketLogUnitTest {
             override fun println(item: LogItem) {
             }
 
-            override fun flush() {
+            override fun flush(type:Int) {
             }
 
             override fun realPrintln(content: String) {
