@@ -1,4 +1,4 @@
-package com.test.module.log
+package com.test.libtest.log
 
 import com.langogo.lib.log.L
 import com.langogo.lib.log.LogConfiguration
@@ -9,6 +9,7 @@ import com.langogo.lib.log.printer.FilePrinter
 import com.langogo.lib.log.printer.file.handler.ZipLogHandler
 import com.langogo.lib.log.printer.file.reporter.LogFileReporter
 import org.junit.Test
+import java.io.File
 import java.lang.management.ManagementFactory
 
 /**
@@ -19,7 +20,7 @@ class LogUnitTest {
     val TAG="LogUinitTest"
     val logDir="src/main/res/test/log/dev/log"
     val backDir="src/main/res/test/log/dev/log/backup"
-
+    val uploadDir="src/main/res/test/log/dev/log/upload"
     init {
 
         L.init(
@@ -35,7 +36,7 @@ class LogUnitTest {
                     ZipLogHandler(
                         backDir,
                         limitSize = 100 * 1024 * 1024,
-                        reporter = LogFileReporter()
+                        reporter = LogFileReporter(File(uploadDir))
                     )
                 )
                 .build())

@@ -24,4 +24,6 @@ class DefaultLogHandler(val fileDir:String):
         }
         logfile.renameTo(backFile)
     }
+
+
 }

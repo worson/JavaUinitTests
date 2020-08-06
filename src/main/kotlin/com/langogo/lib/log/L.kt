@@ -60,7 +60,7 @@ object L {
                                 ZipLogHandler(
                                     File(logPath.absolutePath, "backup").absolutePath,
                                     limitSize = 100 * 1024 * 1024,
-                                    reporter = LogFileReporter()
+                                    reporter = LogFileReporter(File(logPath.absolutePath, "upload"))
                                 )
                             )
                             .build().apply {

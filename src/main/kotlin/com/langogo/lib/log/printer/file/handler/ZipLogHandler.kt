@@ -51,7 +51,8 @@ class ZipLogHandler(val fileDir:String,val limitSize:Long=100*1024*1024,val repo
                         this,
                         LogFileReporter.ReportItem(compressFile,flushType))
                 }
-                filesLimitCut(lestCacheSize)
+                deleteLogFiles()
+//                filesLimitCut(lestCacheSize)
             }
         }
 
