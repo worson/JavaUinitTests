@@ -18,7 +18,7 @@ import java.lang.management.ManagementFactory
  */
 class LogUnitTest {
     val TAG="LogUinitTest"
-    val logDir="src/main/res/test/log/dev/log"
+    val logDir="src/main/res/test/log/dev/log/logging"
     val backDir="src/main/res/test/log/dev/log/backup"
     val uploadDir="src/main/res/test/log/dev/log/upload"
     init {
@@ -36,6 +36,7 @@ class LogUnitTest {
                     ZipLogHandler(
                         backDir,
                         limitSize = 100 * 1024 * 1024,
+                        password="heyan1234",
                         reporter = LogFileReporter(File(uploadDir))
                     )
                 )
@@ -87,5 +88,15 @@ class LogUnitTest {
         println("   ${StackTraceUtil.getRuntimeCaller(2)}")
         L.i(TAG, { "testLog: ${StackTraceUtil.getStackTraceString(Throwable())}" })
         L.i(TAG, { "testLog: ${StackTraceUtil.getRuntimeCaller(6)}" })
+    }
+
+
+    @Test
+    fun testLogFlush(){
+        for(i in 0 .. 100){
+            L.d(TAG,"hello $i ")
+        }
+        L.flush()
+        Thread.sleep(1000)
     }
 }

@@ -10,7 +10,7 @@ import kotlin.math.min
  * 说明:
  * @author wangshengxing  07.17 2020
  */
-class ZipLogHandler(val fileDir:String,val limitSize:Long=100*1024*1024,val reporter: LogFileReporter):
+class ZipLogHandler(val fileDir:String,val limitSize:Long=100*1024*1024,val password:String="heyan1234",val reporter: LogFileReporter):
     LogFileHandler(fileDir) {
 
     private val tmpDir:File=File(fileDir,"tmp")
@@ -46,7 +46,7 @@ class ZipLogHandler(val fileDir:String,val limitSize:Long=100*1024*1024,val repo
             if (files.size>0){
                 checkTmpDir()
                 if (tmpDir.exists()) {
-                    FileZipper.compress(files,compressFile,"heyan1234")
+                    FileZipper.compress(files,compressFile,password)
                     reporter?.onReport(
                         this,
                         LogFileReporter.ReportItem(compressFile,flushType))

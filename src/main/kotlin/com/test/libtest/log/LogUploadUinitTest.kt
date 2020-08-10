@@ -36,6 +36,7 @@ class LogUploadUinitTest {
                             ZipLogHandler(
                                 backDir,
                                 limitSize = 100 * 1024 * 1024,
+                                password="heyan1234",
                                 reporter=reporter
                             )
                         )

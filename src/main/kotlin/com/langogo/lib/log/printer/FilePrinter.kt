@@ -133,17 +133,22 @@ class FilePrinter internal constructor(builder: Builder) :
     ) {
         var lastFileName = writer.lastFileName
         val flush=needFlush
-        if (lastFileName == null || needFlush) {
+        needFlush=false
+        if (lastFileName == null || flush) {
             val folder = File(folderPath)
             folder.list()?.let {
                 list ->
                 val len =list.size
                 list.forEachIndexed { index, s ->
-                    if (index < len-1){
-                        logHandler?.onLogHandle(File(folderPath,s),false,flushType)
-                    }else{
-                        logHandler?.onLogHandle(File(folderPath,s),flush,flushType)
+                    val file=File(folderPath,s)
+                    if (file.exists() && file.isFile) {
+                        if (index < len-1){
+                            logHandler?.onLogHandle(file,false,flushType)
+                        }else{
+                            logHandler?.onLogHandle(file,flush,flushType)
+                        }
                     }
+
                 }
             }
             //还没有文件

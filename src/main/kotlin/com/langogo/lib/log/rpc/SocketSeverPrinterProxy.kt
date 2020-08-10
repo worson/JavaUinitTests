@@ -39,7 +39,12 @@ class SocketSeverPrinterProxy(
         L.i(TAG, "start: server")
         started.set(true)
         thread {
-            handleStartLoop()
+            try {
+                handleStartLoop()
+            } catch (e: Exception) {
+                L.e(TAG, "handleStartLoop:exception ${e.localizedMessage} ")
+                started.set(false)
+            }
         }
 
     }
