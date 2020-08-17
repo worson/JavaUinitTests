@@ -32,9 +32,7 @@ abstract open class LogFileHandler(private val fileDir:String) {
         val dirFile = File(fileDir)
         val files=dirFile.listFiles().apply {
             sortBy {
-                val p: Path = Paths.get(it.absolutePath)
-                val ab= Files.getFileAttributeView(p, BasicFileAttributeView::class.java).readAttributes()
-                ab.creationTime().toMillis()
+                it.lastModified()
             }
         }.toList().filter { it.isFile && (!it.extension.endsWith("zip")) }
         return files

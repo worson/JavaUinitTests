@@ -57,9 +57,7 @@ open class LogFileReporter(val uploadDir:File) {
         val dirFile = uploadDir
         val files=dirFile.listFiles().apply {
             sortBy {
-                val p: Path = Paths.get(it.absolutePath)
-                val ab= Files.getFileAttributeView(p, BasicFileAttributeView::class.java).readAttributes()
-                ab.creationTime().toMillis()
+                it.lastModified()
             }
         }.toList()
         return files

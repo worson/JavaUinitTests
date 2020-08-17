@@ -11,7 +11,7 @@ import com.langogo.lib.log.Logger
 
 internal object  LogDebug {
 
-    internal val IS_DEBUG = false
+    internal var IS_DEBUG = false
 
     val debugLogger:Logger by lazy {
         val debug=IS_DEBUG

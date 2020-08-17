@@ -3,6 +3,7 @@ package com.test.libtest.log
 import com.langogo.lib.log.L
 import com.langogo.lib.log.LogConfiguration
 import com.langogo.lib.log.LogLevel
+import com.langogo.lib.log.internal.LogDebug
 import com.langogo.lib.log.internal.Platform
 import com.langogo.lib.log.internal.StackTraceUtil
 import com.langogo.lib.log.printer.FilePrinter
@@ -22,6 +23,7 @@ class LogUnitTest {
     val backDir="src/main/res/test/log/dev/log/backup"
     val uploadDir="src/main/res/test/log/dev/log/upload"
     init {
+        LogDebug.IS_DEBUG=true
 
         L.init(
             LogConfiguration.Builder()
@@ -97,6 +99,18 @@ class LogUnitTest {
             L.d(TAG,"hello $i ")
         }
         L.flush()
+        Thread.sleep(1000)
+    }
+
+    @Test
+    fun testMultiLogFlush(){
+        for (j in 0 .. 1){
+            for(i in 0 .. 100){
+                L.d(TAG,"hello $i ")
+            }
+            L.flush()
+            Thread.sleep(1000)
+        }
         Thread.sleep(1000)
     }
 }
