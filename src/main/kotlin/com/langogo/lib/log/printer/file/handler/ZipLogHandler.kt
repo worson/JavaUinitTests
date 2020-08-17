@@ -45,18 +45,27 @@ class ZipLogHandler(val fileDir:String,val limitSize:Long=100*1024*1024,val pass
                 backFile.delete()
             }
             logfile.renameTo(backFile)
+        }else{
+            L.w(TAG, "onLogHandle: origin file(${logfile.name}) no exist ")
         }
         //触发日志上报
-        if (isFlush){
+        if (true){
             val files=logFiles()
             L.i(TAG,"all file ${files}")
             if (files.size>0){
                 checkTmpDir()
                 if (tmpDir.exists()) {
                     FileZipper.compress(files,compressFile,password)
-                    reporter?.onReport(
-                        this,
-                        LogFileReporter.ReportItem(compressFile,flushType))
+                    if (compressFile.exists()) {
+                        reporter?.onReport(
+                            this,
+                            LogFileReporter.ReportItem(compressFile,flushType))
+                    }else{
+                        L.w(TAG, "onLogHandle: compressFile ${compressFile.absolutePath} not exist ")
+                    }
+
+                }else{
+                    L.w(TAG, "onLogHandle: tmpDir ${tmpDir.absolutePath} not exist ")
                 }
                 deleteLogFiles()
 //                filesLimitCut(lestCacheSize)

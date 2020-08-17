@@ -8,10 +8,10 @@ import com.langogo.lib.log.Logger
  * 说明:
  * @author wangshengxing  08.03 2020
  */
+ object  LogDebug {
 
-internal object  LogDebug {
-
-    internal var IS_DEBUG = false
+    var IS_DEBUG = false
+    var TRACE_DEPTH = 5
 
     val debugLogger:Logger by lazy {
         val debug=IS_DEBUG
@@ -19,7 +19,7 @@ internal object  LogDebug {
             LogConfiguration.Builder()
                 .logLevel(if (debug) LogLevel.ALL else LogLevel.WARN)
                 .threadInfo(debug)
-                .traceInfo(debug, 5)
+                .traceInfo(debug, TRACE_DEPTH)
                 .addPrinter(Platform.get().defaultPrinter())
                 .build())
     }

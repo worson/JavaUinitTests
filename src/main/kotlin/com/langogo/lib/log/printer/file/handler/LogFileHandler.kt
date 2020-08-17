@@ -1,5 +1,6 @@
 package com.langogo.lib.log.printer.file.handler
 
+import com.langogo.lib.log.internal.LogDebug
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -11,6 +12,8 @@ import java.nio.file.attribute.BasicFileAttributeView
  * @author wangshengxing  07.17 2020
  */
 abstract open class LogFileHandler(private val fileDir:String) {
+    private val  TAG = "LogFileHandler"
+    private val L = LogDebug.debugLogger
 
     init {
         checkFolder()
@@ -60,14 +63,18 @@ abstract open class LogFileHandler(private val fileDir:String) {
             a,f ->
             a+f.length()
         }
-        while (totalSize>limitSize){
-//            println("filesLimitCut：totalSize=$totalSize")
-            files?.first()?.delete()
-            files=logFiles()
-            totalSize=files?.fold(0L){
-                    a,f ->
-                a+f.length()
+        if (totalSize>limitSize){
+            val targetSize=limitSize/2
+            L.i(TAG,"filesLimitCut：totalSize=$totalSize,targetSize=${targetSize}")
+            while (totalSize>targetSize){
+                files?.first()?.delete()
+                files=logFiles()
+                totalSize=files?.fold(0L){
+                        a,f ->
+                    a+f.length()
+                }
             }
         }
+
     }
 }

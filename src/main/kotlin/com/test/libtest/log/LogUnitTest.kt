@@ -39,7 +39,7 @@ class LogUnitTest {
                         backDir,
                         limitSize = 100 * 1024 * 1024,
                         password="heyan1234",
-                        reporter = LogFileReporter(File(uploadDir))
+                        reporter = S3LogUploader(File(uploadDir))
                     )
                 )
                 .build())
@@ -70,7 +70,7 @@ class LogUnitTest {
 
     @Test
     fun testFileSplitSort(){
-        for (i in 0 .. 100000){
+        for (i in 0 .. 300000){//300000
             L.d(TAG, { "testFileSplitSort: ${i}" })
         }
         L.flush()
@@ -98,7 +98,7 @@ class LogUnitTest {
         for(i in 0 .. 100){
             L.d(TAG,"hello $i ")
         }
-        L.flush()
+        L.flush(S3LogUploader.FLUSH_TYPE_UPLOAD)
         Thread.sleep(1000)
     }
 

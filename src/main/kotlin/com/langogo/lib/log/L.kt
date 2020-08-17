@@ -89,6 +89,7 @@ object L {
 
     @JvmStatic
     fun flush(type:Int=0) {
+        i(TAG_PREFIX, "flush: ${type}")
         mLogger?.flush(type)
     }
 

@@ -26,7 +26,7 @@ object FileZipper{
         parameters.isEncryptFiles = true
         parameters.encryptionMethod = EncryptionMethod.ZIP_STANDARD // 加密方式
         ZipFile(outfile,passwd.toCharArray()).apply {
-            isRunInThread=true
+            isRunInThread=false
             addFiles(inputFiles,parameters)
         }
     }

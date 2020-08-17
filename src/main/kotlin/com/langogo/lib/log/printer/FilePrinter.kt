@@ -4,6 +4,7 @@ import com.langogo.lib.log.LogItem
 import com.langogo.lib.log.LogLevel
 import com.langogo.lib.log.format.BasicFlattener
 import com.langogo.lib.log.format.Flattener
+import com.langogo.lib.log.internal.LogDebug
 import com.langogo.lib.log.printer.file.DateFileNameGenerator
 import com.langogo.lib.log.printer.file.FileNameGenerator
 import com.langogo.lib.log.printer.file.backup.BackupStrategy
@@ -22,11 +23,14 @@ import java.util.concurrent.LinkedBlockingQueue
 class FilePrinter internal constructor(builder: Builder) :
     Printer() {
 
+    private val  TAG = "FilePrinter"
+    private val L = LogDebug.debugLogger
+
     class Builder( var folderPath: String ) {
         var fileNameGenerator: FileNameGenerator =
             DateFileNameGenerator()
         var backupStrategy: BackupStrategy =
-            FileSizeBackupStrategy(10 * 1024 * 1024)
+            FileSizeBackupStrategy(10 * 1024 * 1024)//10 * 1024 * 1024
         var flattener: Flattener =
             BasicFlattener()
         var logHandler: LogFileHandler? = null
@@ -133,7 +137,9 @@ class FilePrinter internal constructor(builder: Builder) :
     ) {
         var lastFileName = writer.lastFileName
         val flush=needFlush
+        val flushType=this.flushType
         needFlush=false
+        this.flushType = -1
         if (lastFileName == null || flush) {
             val folder = File(folderPath)
             folder.list()?.let {
@@ -156,10 +162,11 @@ class FilePrinter internal constructor(builder: Builder) :
         }
         val lastFile = writer.file!!
         if (backupStrategy.shouldBackup(lastFile)) {
+            L.i(TAG, "doPrintln: shouldBackup back file  ")
             if (writer.isOpened) {
                 writer.close()
             }
-            logHandler?.onLogHandle(File(lastFileName),flush,flushType)
+            logHandler?.onLogHandle(lastFile,flush,flushType)
             lastFileName= openNewLog(item.level)
         }
         val flattenedLog = flattener.flatten(item)
@@ -174,14 +181,11 @@ class FilePrinter internal constructor(builder: Builder) :
         var lastFileName = writer.lastFileName
         val newFileName =
             fileNameGenerator.generateFileName(logLevel, System.currentTimeMillis())
-        if (newFileName != lastFileName) {
-            if (writer.isOpened) {
-                writer.close()
-            }
-            if (!writer.open(newFileName)) {
-                return null
-            }
-            return newFileName
+        if (writer.isOpened) {
+            writer.close()
+        }
+        if (!writer.open(newFileName)) {
+            return null
         }
         return newFileName
     }
@@ -290,7 +294,7 @@ class FilePrinter internal constructor(builder: Builder) :
         fun open(newFileName: String?): Boolean {
             lastFileName = newFileName
             file = File(folderPath, newFileName)
-
+            L.d(TAG, { "open: file ${file?.absolutePath}" })
             // Create log file if not exists.
             if (!file!!.exists()) {
                 try {
@@ -300,7 +304,7 @@ class FilePrinter internal constructor(builder: Builder) :
                     }
                     file!!.createNewFile()
                 } catch (e: IOException) {
-                    e.printStackTrace()
+                    L.w(TAG, "open: createNewFile ${e.localizedMessage}")
                     lastFileName = null
                     file = null
                     return false
@@ -310,7 +314,7 @@ class FilePrinter internal constructor(builder: Builder) :
             try {
                 bufferedWriter = BufferedWriter(FileWriter(file, true))
             } catch (e: Exception) {
-                e.printStackTrace()
+                L.e(TAG, "open: BufferedWriter ${e.localizedMessage} ")
                 lastFileName = null
                 file = null
                 return false
@@ -328,7 +332,7 @@ class FilePrinter internal constructor(builder: Builder) :
                 try {
                     bufferedWriter?.close()
                 } catch (e: IOException) {
-                    e.printStackTrace()
+                    L.e(TAG, "close: ${e.localizedMessage}")
                     return false
                 } finally {
                     bufferedWriter = null
