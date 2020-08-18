@@ -49,7 +49,7 @@ class ZipLogHandler(val fileDir:String,val limitSize:Long=100*1024*1024,val pass
             L.w(TAG, "onLogHandle: origin file(${logfile.name}) no exist ")
         }
         //触发日志上报
-        if (true){
+        if (isFlush){
             val files=logFiles()
             L.i(TAG,"all file ${files}")
             if (files.size>0){

@@ -8,6 +8,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * 说明:
@@ -15,6 +18,8 @@ import java.io.File
  */
 class S3LogUploader(dirFile: File) : LogFileReporter(dirFile) {
     val TAG = "S3LogUploader"
+
+    val timeFormat= SimpleDateFormat("yyyy_MM_dd___HH_mm_ss", Locale.US)
 
     interface LogFileInterceptorListener {
 
@@ -27,15 +32,22 @@ class S3LogUploader(dirFile: File) : LogFileReporter(dirFile) {
         interceptListener.put(flushType, listener)
     }
 
-    override fun onReport(handler: LogFileHandler, item: ReportItem) {
+    override fun onReport(handler: LogFileHandler?, item: ReportItem) {
         super.onReport(handler, item)
         if (!uploadDir.exists()) {
             uploadDir.mkdirs()
         }
-        val newFile = File(
-            uploadDir,
-            "${item.file.nameWithoutExtension}_${logFiles().size}.${item.file.extension}"
-        )
+
+
+
+        val newFile = if (item.file.parent.equals(uploadDir.absolutePath)) {
+            item.file
+        }else {
+            File(
+                uploadDir,
+                "${item.file.nameWithoutExtension}_${logFiles().size}_${timeFormat.format(Date())}.${item.file.extension}"
+            )
+        }
         L.i(TAG, "onReport: newFile=${newFile.absolutePath}")
         if (item.file.exists()) {
             item.file.renameTo(newFile)

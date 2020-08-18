@@ -64,7 +64,7 @@ open class LogFileReporter(val uploadDir:File) {
     }
 
 
-    open fun onReport(handler: LogFileHandler, item: ReportItem) {
+    open fun onReport(handler: LogFileHandler?, item: ReportItem) {
         println("onReport: ${item} ")
     }
 }
