@@ -20,6 +20,10 @@ dependencies {
 
     implementation("com.squareup.retrofit2:retrofit:2.7.0")
     implementation("com.squareup.retrofit2:converter-gson:2.7.0")
+
+    implementation("com.squareup.okhttp3:okhttp:3.14.4")
+    implementation("com.squareup.okhttp3:mockwebserver:3.14.4")
+
     implementation("com.squareup.okhttp3:logging-interceptor:3.14.2")
 
     implementation("io.reactivex.rxjava2:rxjava:2.2.16")
