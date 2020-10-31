@@ -5,3 +5,4 @@ build
 out
 localCache
 /src/main/res/test/nio/mmap/
+./local.properties
