@@ -7,6 +7,7 @@ import com.test.algo.sort.SortUtil.sortCompare
 import com.test.algo.sort.StdSort.stdSort
 import org.junit.Assert.assertArrayEquals
 import org.junit.Test
+import java.util.concurrent.locks.ReentrantLock
 import kotlin.random.Random
 
 /**
