@@ -25,7 +25,7 @@ open class Platform {
         println(msg)
     }
 
-    internal class Android : Platform() {
+    class Android : Platform() {
         override fun lineSeparator(): String {
             return System.lineSeparator()
         }
@@ -40,8 +40,14 @@ open class Platform {
     }
 
     companion object {
-        private val PLATFORM =
+
+        private var PLATFORM =
             findPlatform()
+
+        fun setPlatform(platform:Platform){
+            PLATFORM=platform
+        }
+
         fun get(): Platform {
             return PLATFORM
         }

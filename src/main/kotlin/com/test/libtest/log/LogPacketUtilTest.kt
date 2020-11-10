@@ -9,7 +9,7 @@ import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
 
 /**
- * 说明:
+ * 说明:拆包和解包工具测试
  * @author wangshengxing  08.02 2020
  */
 class LogPacketUtilTest {
@@ -17,19 +17,7 @@ class LogPacketUtilTest {
     val TAG = "LogPacketUitilTest"
 
     init {
-        SimpleLog.initConsolePrint(true)
-    }
-
-    @Test
-    fun showAsciiStrByteSize() {
-        val str = "hello"
-        L.i(TAG, "showAsciiStrByteSize: ${str.toByteArray(Charsets.UTF_8).size}")
-    }
-
-    @Test
-    fun showChineseStrByteSize() {
-        val str = "中国"
-        L.i(TAG, "showAsciiStrByteSize: ${str.toByteArray(Charsets.UTF_8).size}")
+        LogInit.init()
     }
 
     @Test
@@ -45,6 +33,7 @@ class LogPacketUtilTest {
         L.i(TAG, "testPackAndUnpack: for read bytebuffer size ${bf.limit()}")
         val result = SocketPacketUtil.unpack(bf)
         L.i(TAG, "testPackAndUnpack: for read bytebuffer size ${bf.position()}")
+        //then
         Assert.assertEquals(expect, result)
     }
 
@@ -91,6 +80,8 @@ class LogPacketUtilTest {
             result.add(tStr)
             tStr = SocketPacketUtil.unpack(bf)
         }
+
+        //then
         L.i(TAG, "testMulitiPackAndUnpack: result ${result}")
         Assert.assertEquals(expect, result)
     }
@@ -137,7 +128,6 @@ class LogPacketUtilTest {
             result.add(tStr)
             tStr = SocketPacketUtil.unpack(bf)
         }
-
 
         L.i(TAG, "testMulitiPackAndUnpack: result ${result}")
         Assert.assertEquals(expect, result)

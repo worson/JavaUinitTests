@@ -12,7 +12,7 @@ import org.junit.Test
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
- * 说明:
+ * 说明:测试C/S日志发送接收服务
  * @author wangshengxing  08.02 2020
  */
 class SocketLogUnitTest {
